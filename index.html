@@ -410,8 +410,8 @@
             // CORREÇÃO: Removido 'shopLocation' que causava erro na API
             const queryPayload = {
                 query: `
-                    query($keyword: String, $categoryId: Int, $priceMax: Float, $sortType: Int) {
-                        productOfferV2(keyword: $keyword, productCatId: $categoryId, priceMax: $priceMax, sortType: $sortType, limit: 50) {
+                    query($keyword: String, $categoryId: Int, $sortType: Int) {
+                        productOfferV2(keyword: $keyword, productCatId: $categoryId, sortType: $sortType, limit: 50) {
                             nodes {
                                 itemId
                                 productName
@@ -431,7 +431,6 @@
                 variables: {
                     keyword: keyword,
                     categoryId: categoryId ? parseInt(categoryId) : null,
-                    priceMax: priceMax ? parseFloat(priceMax) : null,
                     sortType: sortType ? parseInt(sortType) : null
                 }
             };
@@ -445,21 +444,28 @@
 
                 const contentType = response.headers.get("content-type");
                 if (contentType && contentType.indexOf("application/json") === -1) {
-                    throw new Error(`Erro 404: O Backend (/api/proxy) não foi encontrado.`);
+                    throw new Error(`Erro 404: O Backend(/api/proxy) não foi encontrado.`);
                 }
 
                 if (!response.ok) {
-                    throw new Error(`Erro HTTP: ${response.status}`);
+                    throw new Error(`Erro HTTP: ${response.status} `);
                 }
 
                 const data = await response.json();
 
                 if (data.errors) {
-                    throw new Error(`Erro da Shopee: ${data.errors[0].message}`);
+                    throw new Error(`Erro da Shopee: ${data.errors[0].message} `);
                 }
 
                 if (data.data && data.data.productOfferV2 && data.data.productOfferV2.nodes) {
-                    renderProducts(data.data.productOfferV2.nodes, freeShipping); // Pass freeShipping to renderProducts
+                    let products = data.data.productOfferV2.nodes;
+
+                    // Filtragem Client-Side por Preço Máximo (já que a API não aceitou priceMax)
+                    if (priceMax) {
+                        products = products.filter(p => p.price <= priceMax);
+                    }
+
+                    renderProducts(products, freeShipping);
                     statusDiv.classList.remove('hidden', 'bg-red-50', 'border-red-200', 'text-red-700', 'bg-yellow-50', 'border-yellow-200', 'text-yellow-700');
                     statusDiv.classList.add('bg-green-50', 'border-green-200', 'text-green-700');
                     statusText.innerHTML = `<strong>Sucesso:</strong> Exibindo resultados para "${keyword}".`;
@@ -586,30 +592,31 @@
                         </div>
                     </div>
 
-                    <div class="p-3 flex flex-col flex-grow">
-                        <h3 class="text-sm text-gray-700 font-medium line-clamp-2 mb-1 min-h-[40px] leading-tight" title="${name}">
-                            ${name}
-                        </h3>
-                        
-                        <div class="flex items-center justify-between gap-1 mb-2">
-                            <div class="flex items-center gap-1">
-                                <div class="flex text-yellow-400 text-[10px]">
-                                    ${generateStars(rating)}
-                                </div>
-                                <span class="text-[10px] text-gray-400">(${sales})</span>
-                            </div>
-                        </div>
+                <div class="p-3 flex flex-col flex-grow">
+                    <h3 class="text-sm text-gray-700 font-medium line-clamp-2 mb-1 min-h-[40px] leading-tight" title="${name}">
+                        ${name}
+                    </h3>
 
-                        <div class="mt-auto pt-2 border-t border-gray-50">
-                            ${oldPrice ? `<span class="text-xs text-gray-400 line-through">R$ ${oldPrice.toFixed(2).replace('.', ',')}</span>` : ''}
-                            <div class="flex items-center justify-between">
-                                <span class="text-lg font-bold text-brand-orange">R$ ${price.toFixed(2).replace('.', ',')}</span>
-                                <span class="text-[10px] text-blue-500 bg-blue-50 px-1 rounded border border-blue-100 truncate max-w-[50%]" title="${shop}">${shop}</span>
+                    <div class="flex items-center justify-between gap-1 mb-2">
+                        <div class="flex items-center gap-1">
+                            <div class="flex text-yellow-400 text-[10px]">
+                                ${generateStars(rating)}
                             </div>
+                            <span class="text-[10px] text-gray-400">(${sales})</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto pt-2 border-t border-gray-50">
+                        ${oldPrice ? `<span class="text-xs text-gray-400 line-through">R$ ${oldPrice.toFixed(2).replace('.', ',')}</span>` : ''}
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-bold text-brand-orange">R$ ${price.toFixed(2).replace('.', ',')}</span>
+                            <span class="text-[10px] text-blue-500 bg-blue-50 px-1 rounded border border-blue-100 truncate max-w-[50%]" title="${shop}">${shop}</span>
                         </div>
                     </div>
                 </div>
-            `}).join('');
+                </div>
+            `;
+            }).join('');
         }
 
         function generateStars(rating) {
