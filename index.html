@@ -101,10 +101,6 @@
                     <button class="relative text-gray-600 hover:text-brand-orange transition-colors md:hidden" id="mobileSearchToggle">
                         <i class="fas fa-search text-xl"></i>
                     </button>
-                    <button class="relative text-gray-600 hover:text-brand-orange transition-colors group" onclick="openCart()">
-                        <i class="fas fa-shopping-cart text-xl group-hover:scale-110 transition-transform"></i>
-                        <span id="cartCount" class="absolute -top-2 -right-2 bg-brand-orange text-white text-[10px] font-bold h-5 w-5 flex items-center justify-center rounded-full border-2 border-white">0</span>
-                    </button>
                 </div>
             </div>
 
@@ -273,8 +269,6 @@
             { name: "Esporte", icon: "fa-running", color: "text-orange-500 bg-orange-50", query: "esporte fitness" },
             { name: "Pet", icon: "fa-paw", color: "text-yellow-600 bg-yellow-50", query: "pet shop" },
         ];
-
-        let cartItems = 0;
 
         document.addEventListener('DOMContentLoaded', () => {
             renderCategories();
@@ -473,28 +467,11 @@
             return stars;
         }
 
-        function addToCart() {
-            cartItems++;
-            updateCart();
-            showToast("Redirecionando para Shopee...");
-        }
-
-        function updateCart() {
-            const badge = document.getElementById('cartCount');
-            badge.innerText = cartItems;
-            badge.parentElement.classList.add('scale-125');
-            setTimeout(() => badge.parentElement.classList.remove('scale-125'), 200);
-        }
-
         function showToast(msg) {
             const toast = document.getElementById('toast');
             toast.querySelector('p').innerText = msg;
             toast.classList.remove('translate-x-full');
             setTimeout(() => toast.classList.add('translate-x-full'), 3000);
-        }
-
-        function openCart() {
-            alert("Carrinho vazio! Clique em 'Ver Oferta' para comprar na Shopee.");
         }
 
         function resetFilters() {
