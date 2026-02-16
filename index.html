@@ -484,8 +484,8 @@
             // Query
             const queryPayload = {
                 query: `
-                    query($keyword: String, $categoryId: Int, $sortType: Int, $page: Int) {
-                        productOfferV2(keyword: $keyword, productCatId: $categoryId, sortType: $sortType, page: $page, limit: 50) {
+                    query($keyword: String, $categoryId: Int, $sortType: Int, $newest: Int) {
+                        productOfferV2(keyword: $keyword, productCatId: $categoryId, sortType: $sortType, newest: $newest, limit: 50) {
                             nodes {
                                 itemId
                                 productName
@@ -506,7 +506,7 @@
                     keyword: keyword,
                     categoryId: categoryId ? parseInt(categoryId) : null,
                     sortType: sortType ? parseInt(sortType) : null,
-                    page: currentPage // Envia página atual
+                    newest: currentPage * 50 // Shopee usa 'newest' como offset (0, 50, 100...)
                 }
             };
 
