@@ -1,0 +1,11 @@
+{
+    "name": "alfashop-proxy",
+    "version": "1.0.0",
+    "description": "Proxy para Shopee API",
+    "main": "api/proxy.js",
+    "type": "module",
+    "engines": {
+        "node": "18.x"
+    },
+    "dependencies": {}
+}
