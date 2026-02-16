@@ -197,8 +197,8 @@
         <section>
             <div class="flex flex-col md:flex-row justify-between items-end md:items-center mb-6 gap-2">
                 <div>
-                    <h3 class="font-bold text-xl text-gray-800 flex items-center gap-2">
-                        <i class="fas fa-fire text-brand-orange"></i> Resultados
+                    <h3 class="font-bold text-xl text-gray-800 flex items-center gap-2" id="sectionTitle">
+                        <i class="fas fa-fire text-brand-orange"></i> Destaques do Dia
                     </h3>
                     <p class="text-sm text-gray-500" id="resultsText">Carregando melhores ofertas...</p>
                 </div>
@@ -291,26 +291,29 @@
     <script>
         // CONFIGURAÇÃO DAS CATEGORIAS
         const categories = [
-            { name: "Ofertas", icon: "fa-fire", color: "text-red-500 bg-red-50", query: "promoção" },
-            { name: "Tech", icon: "fa-mobile-alt", color: "text-blue-500 bg-blue-50", query: "celular iphone xiaomi" },
-            { name: "Casa & Cozinha", icon: "fa-couch", color: "text-green-500 bg-green-50", query: "casa cozinha utilidades" },
-            { name: "Moda", icon: "fa-tshirt", color: "text-purple-500 bg-purple-50", query: "moda roupas" },
-            { name: "Beleza", icon: "fa-magic", color: "text-pink-500 bg-pink-50", query: "maquiagem beleza" },
-            { name: "Gamer", icon: "fa-gamepad", color: "text-indigo-500 bg-indigo-50", query: "gamer pc" },
-            { name: "Esporte", icon: "fa-running", color: "text-orange-500 bg-orange-50", query: "esporte fitness" },
-            { name: "Pet", icon: "fa-paw", color: "text-yellow-600 bg-yellow-50", query: "pet shop" },
+            { name: "Casa & Cozinha", icon: "fa-couch", color: "text-green-500 bg-green-50", query: "casa cozinha utilidades", id: 100190 }, // Utensílios de Cozinha
+            { name: "Tecnologia & Games", icon: "fa-mobile-alt", color: "text-blue-500 bg-blue-50", query: "celulares games eletronicos", id: 100073 }, // Celulares
+            { name: "Moda & Acessórios", icon: "fa-tshirt", color: "text-purple-500 bg-purple-50", query: "moda roupas acessorios", id: 100001 }, // Roupas Femininas (Genérico)
+            { name: "Beleza & Cuidados", icon: "fa-spa", color: "text-pink-500 bg-pink-50", query: "beleza cuidados maquiagem", id: 100661 }, // Perfumes
+            { name: "Saúde & Bem-estar", icon: "fa-heartbeat", color: "text-red-500 bg-red-50", query: "saude suplementos bem-estar", id: 100003 }, // Suplementos
+            { name: "Esportes & Lazer", icon: "fa-running", color: "text-orange-500 bg-orange-50", query: "esportes fitness lazer", id: 101890 }, // Academia
+            { name: "Brinquedos & Hobbies", icon: "fa-gamepad", color: "text-yellow-500 bg-yellow-50", query: "brinquedos jogos hobbies", id: 101400 }, // Jogos
+            { name: "Papelaria & Escritório", icon: "fa-pen-nib", color: "text-indigo-500 bg-indigo-50", query: "papelaria escritorio material escolar", id: 101337 }, // Canetas
+            { name: "Automotivo", icon: "fa-car", color: "text-gray-500 bg-gray-50", query: "acessorios carro moto", id: 101415 } // Acessórios Carro
         ];
 
         document.addEventListener('DOMContentLoaded', () => {
             renderCategories();
-            fetchProducts('casa cozinha tecnologia mais vendidos');
+            // Carrega produtos variados inicialmente (Casa, Cozinha, Tech)
+            // Se você tiver os IDs específicos, troque aqui. Ex: 100013 (Tech)
+            fetchProducts('casa cozinha tecnologia', 'Achadinhos para Casa & Tech 🏠📱');
             setupEventListeners();
         });
 
         function renderCategories() {
             const container = document.getElementById('categoriesContainer');
             container.innerHTML = categories.map(cat => `
-                <div class="category-item flex flex-col items-center min-w-[70px] cursor-pointer group transition-transform" onclick="fetchProducts('${cat.query}')">
+                <div class="category-item flex flex-col items-center min-w-[70px] cursor-pointer group transition-transform" onclick="fetchProducts('${cat.query}', '${cat.name}', ${cat.id})">
                     <div class="category-icon w-14 h-14 rounded-full ${cat.color} flex items-center justify-center text-xl mb-2 shadow-sm group-hover:shadow-md transition-all duration-300">
                         <i class="fas ${cat.icon}"></i>
                     </div>
@@ -320,10 +323,19 @@
         }
 
         // --- FUNÇÃO DE BUSCA (APENAS API REAL) ---
-        async function fetchProducts(keyword) {
+        async function fetchProducts(keyword, customTitle = null, categoryId = null) {
             const grid = document.getElementById('productsGrid');
             const statusDiv = document.getElementById('apiStatus');
             const statusText = document.getElementById('apiStatusText');
+            const sectionTitle = document.getElementById('sectionTitle');
+
+            if (customTitle) {
+                sectionTitle.innerHTML = `<i class="fas fa-star text-yellow-500"></i> ${customTitle}`;
+            } else if (categoryId) {
+                sectionTitle.innerHTML = `<i class="fas fa-tag text-brand-orange"></i> Categoria: ${keyword}`;
+            } else {
+                sectionTitle.innerHTML = `<i class="fas fa-search text-brand-orange"></i> Resultados para "${keyword}"`;
+            }
 
             // Loading
             grid.innerHTML = Array(20).fill(0).map(() => `
@@ -337,8 +349,8 @@
             // CORREÇÃO: Removido 'shopLocation' que causava erro na API
             const queryPayload = {
                 query: `
-                    query($keyword: String) {
-                        productOfferV2(keyword: $keyword, limit: 50) {
+                    query($keyword: String, $categoryId: Int) {
+                        productOfferV2(keyword: $keyword, productCatId: $categoryId, limit: 50) {
                             nodes {
                                 itemId
                                 productName
@@ -350,11 +362,15 @@
                                 ratingStar
                                 sales
                                 offerLink
+                                productCatIds
                             }
                         }
                     }
                 `,
-                variables: { keyword: keyword }
+                variables: {
+                    keyword: keyword,
+                    categoryId: categoryId ? parseInt(categoryId) : null
+                }
             };
 
             try {
