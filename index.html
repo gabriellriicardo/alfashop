@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AlfaShop | Seu Shopping Online Inteligente</title>
-
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
+    
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -37,67 +36,31 @@
     </script>
 
     <style>
-        body {
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .scroll-hide::-webkit-scrollbar {
-            display: none;
-        }
-
-        .scroll-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-        }
-
+        body { -webkit-font-smoothing: antialiased; }
+        .scroll-hide::-webkit-scrollbar { display: none; }
+        .scroll-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
         .shimmer {
             background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
             background-size: 200% 100%;
             animation: shimmer 1.5s infinite;
         }
-
         @keyframes shimmer {
-            0% {
-                background-position: 200% 0;
-            }
-
-            100% {
-                background-position: -200% 0;
-            }
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
-
-        .btn-buy {
-            position: relative;
-            overflow: hidden;
-        }
-
+        .btn-buy { position: relative; overflow: hidden; }
         .btn-buy::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: 0.5s;
         }
-
-        .btn-buy:hover::after {
-            left: 100%;
-        }
+        .btn-buy:hover::after { left: 100%; }
     </style>
 </head>
-
 <body class="bg-gray-50 text-slate-800 flex flex-col min-h-screen">
 
     <!-- Toast -->
-    <div id="toast"
-        class="fixed top-5 right-5 bg-brand-dark text-white px-6 py-4 rounded-lg shadow-2xl transform translate-x-full transition-transform duration-300 z-50 flex items-center gap-3">
+    <div id="toast" class="fixed top-5 right-5 bg-brand-dark text-white px-6 py-4 rounded-lg shadow-2xl transform translate-x-full transition-transform duration-300 z-50 flex items-center gap-3">
         <i class="fas fa-check-circle text-green-400 text-xl"></i>
         <div>
             <h4 class="font-bold text-sm">Sucesso!</h4>
@@ -124,34 +87,29 @@
                 </a>
 
                 <div class="hidden md:flex flex-1 max-w-xl mx-auto relative">
-                    <input type="text" id="searchInputDesktop" placeholder="Buscar produtos na Shopee..."
+                    <input type="text" id="searchInputDesktop" placeholder="Buscar produtos na Shopee..." 
                         class="w-full pl-5 pr-12 py-2.5 rounded-full border border-gray-200 bg-gray-50 focus:bg-white focus:border-brand-orange focus:ring-2 focus:ring-orange-100 outline-none transition-all placeholder-gray-400 text-sm">
-                    <button id="searchBtnDesktop"
-                        class="absolute right-1 top-1 bottom-1 bg-brand-orange text-white rounded-full w-10 flex items-center justify-center hover:bg-orange-600 transition-colors">
+                    <button id="searchBtnDesktop" class="absolute right-1 top-1 bottom-1 bg-brand-orange text-white rounded-full w-10 flex items-center justify-center hover:bg-orange-600 transition-colors">
                         <i class="fas fa-search text-sm"></i>
                     </button>
                 </div>
 
                 <div class="flex items-center gap-3 sm:gap-6">
-                    <button class="relative text-gray-600 hover:text-brand-orange transition-colors md:hidden"
-                        id="mobileSearchToggle">
+                    <button class="relative text-gray-600 hover:text-brand-orange transition-colors md:hidden" id="mobileSearchToggle">
                         <i class="fas fa-search text-xl"></i>
                     </button>
-                    <button class="relative text-gray-600 hover:text-brand-orange transition-colors group"
-                        onclick="openCart()">
+                    <button class="relative text-gray-600 hover:text-brand-orange transition-colors group" onclick="openCart()">
                         <i class="fas fa-shopping-cart text-xl group-hover:scale-110 transition-transform"></i>
-                        <span id="cartCount"
-                            class="absolute -top-2 -right-2 bg-brand-orange text-white text-[10px] font-bold h-5 w-5 flex items-center justify-center rounded-full border-2 border-white">0</span>
+                        <span id="cartCount" class="absolute -top-2 -right-2 bg-brand-orange text-white text-[10px] font-bold h-5 w-5 flex items-center justify-center rounded-full border-2 border-white">0</span>
                     </button>
                 </div>
             </div>
 
             <div id="mobileSearchContainer" class="hidden mt-3 md:hidden">
                 <div class="relative">
-                    <input type="text" id="searchInputMobile" placeholder="O que você procura hoje?"
+                    <input type="text" id="searchInputMobile" placeholder="O que você procura hoje?" 
                         class="w-full pl-4 pr-10 py-3 rounded-lg border border-gray-200 bg-gray-50 focus:border-brand-orange outline-none text-sm">
-                    <button id="searchBtnMobile"
-                        class="absolute right-2 top-2 bottom-2 bg-brand-orange text-white rounded px-3 text-sm">
+                    <button id="searchBtnMobile" class="absolute right-2 top-2 bottom-2 bg-brand-orange text-white rounded px-3 text-sm">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
@@ -164,31 +122,25 @@
 
         <!-- Banner -->
         <section class="relative rounded-2xl overflow-hidden shadow-lg h-48 md:h-80 bg-gray-900 group">
-            <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-                alt="Promoção"
-                class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700">
-            <div
-                class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent flex flex-col justify-center px-6 md:px-12">
-                <span class="text-brand-orange font-bold text-sm md:text-base tracking-wider uppercase mb-2">Oferta
-                    Relâmpago</span>
-                <h2 class="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">Shopee Ofertas <br>com até
-                    <span class="text-brand-orange">50% OFF</span></h2>
-                <button onclick="document.getElementById('productsGrid').scrollIntoView({behavior: 'smooth'})"
-                    class="bg-brand-orange hover:bg-orange-600 text-white px-6 py-3 rounded-full font-medium w-fit transition-all flex items-center gap-2 btn-buy">
+            <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
+                 alt="Promoção" 
+                 class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent flex flex-col justify-center px-6 md:px-12">
+                <span class="text-brand-orange font-bold text-sm md:text-base tracking-wider uppercase mb-2">Oferta Relâmpago</span>
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">Shopee Ofertas <br>com até <span class="text-brand-orange">50% OFF</span></h2>
+                <button onclick="document.getElementById('productsGrid').scrollIntoView({behavior: 'smooth'})" class="bg-brand-orange hover:bg-orange-600 text-white px-6 py-3 rounded-full font-medium w-fit transition-all flex items-center gap-2 btn-buy">
                     Ver Ofertas <i class="fas fa-arrow-right text-xs"></i>
                 </button>
             </div>
         </section>
 
         <!-- Status da API (Diagnóstico) -->
-        <div id="apiStatus"
-            class="hidden bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-lg text-xs flex items-center justify-between gap-2 shadow-sm">
+        <div id="apiStatus" class="hidden bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-lg text-xs flex items-center justify-between gap-2 shadow-sm">
             <div class="flex items-center gap-2">
                 <i class="fas fa-info-circle text-lg"></i>
                 <span id="apiStatusText">Verificando conexão...</span>
             </div>
-            <button onclick="fetchProducts('best sellers')"
-                class="bg-white border border-blue-200 px-2 py-1 rounded hover:bg-blue-50 transition-colors">
+            <button onclick="fetchProducts('best sellers')" class="bg-white border border-blue-200 px-2 py-1 rounded hover:bg-blue-50 transition-colors">
                 <i class="fas fa-sync-alt"></i> Tentar de novo
             </button>
         </div>
@@ -212,23 +164,12 @@
                     <div class="w-3/4 h-4 rounded shimmer"></div>
                     <div class="w-1/2 h-4 rounded shimmer"></div>
                 </div>
-                <div class="bg-white rounded-xl p-4 shadow-sm h-80 flex flex-col gap-3">
-                    <div class="w-full h-40 rounded-lg shimmer"></div>
-                    <div class="w-3/4 h-4 rounded shimmer"></div>
-                    <div class="w-1/2 h-4 rounded shimmer"></div>
-                </div>
-                <div class="bg-white rounded-xl p-4 shadow-sm h-80 flex flex-col gap-3">
-                    <div class="w-full h-40 rounded-lg shimmer"></div>
-                    <div class="w-3/4 h-4 rounded shimmer"></div>
-                    <div class="w-1/2 h-4 rounded shimmer"></div>
-                </div>
             </div>
-
+            
             <div id="noResults" class="hidden text-center py-12">
                 <i class="fas fa-search text-4xl text-gray-200 mb-3"></i>
                 <p class="text-gray-500">Nenhum produto encontrado.</p>
-                <button onclick="resetFilters()" class="mt-2 text-brand-orange font-medium hover:underline">Tentar
-                    novamente</button>
+                <button onclick="resetFilters()" class="mt-2 text-brand-orange font-medium hover:underline">Tentar novamente</button>
             </div>
         </section>
 
@@ -284,20 +225,18 @@
     <!-- JAVASCRIPT -->
     <script>
         // --- DADOS FAKE (FALLBACK DE SEGURANÇA) ---
-        // Se a API falhar, estes produtos SEMPRE serão mostrados.
         const mockProducts = [
-            { itemId: 1, name: "Fone Bluetooth TWS (Exemplo)", price: 49.90, priceMax: 120.00, ratingStar: 4.8, sales: 1200, imageUrl: "https://images.unsplash.com/photo-1572569028738-411a78c1d166?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
-            { itemId: 2, name: "Smartwatch Series 8 (Exemplo)", price: 189.90, priceMax: 350.00, ratingStar: 4.7, sales: 850, imageUrl: "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
-            { itemId: 3, name: "Tênis Runner (Exemplo)", price: 129.90, priceMax: 199.90, ratingStar: 4.9, sales: 540, imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
-            { itemId: 4, name: "Luminária LED (Exemplo)", price: 35.50, priceMax: 60.00, ratingStar: 4.5, sales: 2100, imageUrl: "https://images.unsplash.com/photo-1534073828943-f801091a7174?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
-            { itemId: 5, name: "Câmera Wi-Fi (Exemplo)", price: 110.00, priceMax: 180.00, ratingStar: 4.6, sales: 320, imageUrl: "https://images.unsplash.com/photo-1557324232-b8917d3c3d63?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
-            { itemId: 6, name: "Garrafa Térmica (Exemplo)", price: 45.90, priceMax: 89.90, ratingStar: 4.8, sales: 4000, imageUrl: "https://images.unsplash.com/photo-1602143407151-01114192003f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" }
+            { itemId: 1, productName: "Fone Bluetooth TWS (Exemplo)", price: 49.90, priceMax: 120.00, ratingStar: 4.8, sales: 1200, imageUrl: "https://images.unsplash.com/photo-1572569028738-411a78c1d166?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
+            { itemId: 2, productName: "Smartwatch Series 8 (Exemplo)", price: 189.90, priceMax: 350.00, ratingStar: 4.7, sales: 850, imageUrl: "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
+            { itemId: 3, productName: "Tênis Runner (Exemplo)", price: 129.90, priceMax: 199.90, ratingStar: 4.9, sales: 540, imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
+            { itemId: 4, productName: "Luminária LED (Exemplo)", price: 35.50, priceMax: 60.00, ratingStar: 4.5, sales: 2100, imageUrl: "https://images.unsplash.com/photo-1534073828943-f801091a7174?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
+            { itemId: 5, productName: "Câmera Wi-Fi (Exemplo)", price: 110.00, priceMax: 180.00, ratingStar: 4.6, sales: 320, imageUrl: "https://images.unsplash.com/photo-1557324232-b8917d3c3d63?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" }
         ];
 
         let cartItems = 0;
 
         document.addEventListener('DOMContentLoaded', () => {
-            fetchProducts('best sellers'); // Busca inicial
+            fetchProducts('best sellers');
             setupEventListeners();
         });
 
@@ -306,8 +245,7 @@
             const grid = document.getElementById('productsGrid');
             const statusDiv = document.getElementById('apiStatus');
             const statusText = document.getElementById('apiStatusText');
-
-            // Loading UI
+            
             grid.innerHTML = `
                 <div class="col-span-full text-center py-12 text-gray-400">
                     <i class="fas fa-spinner fa-spin text-3xl mb-3 text-brand-orange"></i>
@@ -315,14 +253,14 @@
                 </div>
             `;
 
-            // Query GraphQL
+            // CORREÇÃO: "name" trocado por "productName"
             const queryPayload = {
                 query: `
                     query($keyword: String) {
                         productOfferV2(keyword: $keyword, limit: 12) {
                             nodes {
                                 itemId
-                                name
+                                productName
                                 imageUrl
                                 price
                                 priceMin
@@ -338,17 +276,15 @@
             };
 
             try {
-                // Tenta chamar o proxy
                 const response = await fetch('/api/proxy', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(queryPayload)
                 });
 
-                // Verifica se a resposta é HTML (Erro comum no Vercel quando a rota não existe)
                 const contentType = response.headers.get("content-type");
                 if (contentType && contentType.indexOf("application/json") === -1) {
-                    throw new Error(`Erro 404: O Backend (/api/proxy) não foi encontrado. Verifique se a pasta 'api' foi enviada.`);
+                    throw new Error(`Erro 404: O Backend não foi encontrado. A pasta 'api' foi enviada?`);
                 }
 
                 if (!response.ok) {
@@ -356,49 +292,38 @@
                 }
 
                 const data = await response.json();
-
-                // Verifica se a API retornou erro interno
+                
                 if (data.errors) {
                     throw new Error(`Erro da Shopee: ${data.errors[0].message}`);
                 }
 
-                // Verifica formato dos dados
                 if (data.data && data.data.productOfferV2 && data.data.productOfferV2.nodes) {
                     renderProducts(data.data.productOfferV2.nodes);
-
-                    // Sucesso: Esconde barra de erro ou mostra sucesso discreto
                     statusDiv.classList.remove('hidden', 'bg-red-50', 'border-red-200', 'text-red-700', 'bg-yellow-50', 'border-yellow-200', 'text-yellow-700');
                     statusDiv.classList.add('bg-green-50', 'border-green-200', 'text-green-700');
                     statusText.innerHTML = `<strong>Sucesso:</strong> Conectado à API oficial da Shopee.`;
-                    setTimeout(() => statusDiv.classList.add('hidden'), 5000); // Esconde após 5s
+                    setTimeout(() => statusDiv.classList.add('hidden'), 5000);
                 } else {
-                    throw new Error("Formato de dados inesperado da API.");
+                    throw new Error("Formato de dados inesperado.");
                 }
 
             } catch (error) {
                 console.warn("Falha na API, ativando fallback.", error);
-
-                // ATIVANDO MODO FALLBACK (Segurança)
+                
                 statusDiv.classList.remove('hidden', 'bg-green-50', 'border-green-200', 'text-green-700');
-
-                // Diferencia erro de configuração (404) de erro de servidor
                 if (error.message.includes('404')) {
-                    statusDiv.classList.add('bg-red-50', 'border-red-200', 'text-red-700');
-                    statusText.innerHTML = `<strong>Erro de Configuração:</strong> ${error.message}`;
+                     statusDiv.classList.add('bg-red-50', 'border-red-200', 'text-red-700');
+                     statusText.innerHTML = `<strong>Erro de Configuração:</strong> ${error.message}`;
                 } else {
-                    statusDiv.classList.add('bg-yellow-50', 'border-yellow-200', 'text-yellow-700');
-                    statusText.innerHTML = `<strong>Modo Demonstração:</strong> ${error.message || "Erro desconhecido na API"}`;
+                     statusDiv.classList.add('bg-yellow-50', 'border-yellow-200', 'text-yellow-700');
+                     statusText.innerHTML = `<strong>Modo Demonstração:</strong> ${error.message}`;
                 }
 
-                // Renderiza produtos Mock filtrados
-                const filtered = mockProducts.filter(p =>
-                    p.name.toLowerCase().includes(keyword.toLowerCase()) ||
+                const filtered = mockProducts.filter(p => 
+                    p.productName.toLowerCase().includes(keyword.toLowerCase()) || 
                     keyword === 'best sellers'
                 );
-
-                // Se o filtro não retornar nada, mostra tudo (para não ficar vazio)
                 const itemsToShow = filtered.length > 0 ? filtered : mockProducts;
-
                 renderProducts(itemsToShow);
             }
         }
@@ -417,15 +342,17 @@
 
             noResults.classList.add('hidden');
             resultsText.innerText = `Exibindo ${items.length} ofertas.`;
-
+            
             grid.innerHTML = items.map(product => {
-                // Normalização robusta de dados
+                // CORREÇÃO: Mapeando "productName"
+                const name = product.productName || product.name || "Produto sem nome";
                 const price = product.price || product.priceMin || 99.90;
                 const oldPrice = product.priceMax > price ? product.priceMax : (price * 1.2);
                 const discount = oldPrice ? Math.round(((oldPrice - price) / oldPrice) * 100) : 0;
                 const rating = product.ratingStar || 5;
                 const image = product.imageUrl || 'https://via.placeholder.com/300?text=Sem+Imagem';
                 const link = product.offerLink || '#';
+                const sales = product.sales || 'Novo';
 
                 return `
                 <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col group transition-all duration-300 relative h-full">
@@ -436,7 +363,7 @@
                     ` : ''}
                     
                     <div class="relative w-full h-48 overflow-hidden bg-gray-100">
-                        <img src="${image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://via.placeholder.com/300?text=Shopee'">
+                        <img src="${image}" alt="${name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://via.placeholder.com/300?text=Shopee'">
                         
                         <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                             <a href="${link}" target="_blank" class="bg-white text-brand-dark p-2 rounded-full hover:bg-brand-orange hover:text-white transition-colors shadow-lg transform translate-y-4 group-hover:translate-y-0 duration-300">
@@ -446,15 +373,15 @@
                     </div>
 
                     <div class="p-3 flex flex-col flex-grow">
-                        <h3 class="text-sm text-gray-700 font-medium line-clamp-2 mb-1 min-h-[40px] leading-tight" title="${product.name}">
-                            ${product.name}
+                        <h3 class="text-sm text-gray-700 font-medium line-clamp-2 mb-1 min-h-[40px] leading-tight" title="${name}">
+                            ${name}
                         </h3>
                         
                         <div class="flex items-center gap-1 mb-2">
                             <div class="flex text-yellow-400 text-[10px]">
                                 ${generateStars(rating)}
                             </div>
-                            <span class="text-[10px] text-gray-400">(${product.sales || 'Novo'})</span>
+                            <span class="text-[10px] text-gray-400">(${sales} vendidos)</span>
                         </div>
 
                         <div class="mt-auto pt-2 border-t border-gray-50">
@@ -512,14 +439,14 @@
         function setupEventListeners() {
             const handleSearch = (id) => {
                 const val = document.getElementById(id).value;
-                if (val.length > 2) fetchProducts(val);
+                if(val.length > 2) fetchProducts(val);
             };
 
             document.getElementById('searchBtnDesktop').addEventListener('click', () => handleSearch('searchInputDesktop'));
-            document.getElementById('searchInputDesktop').addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSearch('searchInputDesktop') });
-
+            document.getElementById('searchInputDesktop').addEventListener('keypress', (e) => { if(e.key === 'Enter') handleSearch('searchInputDesktop') });
+            
             document.getElementById('searchBtnMobile').addEventListener('click', () => handleSearch('searchInputMobile'));
-            document.getElementById('searchInputMobile').addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSearch('searchInputMobile') });
+            document.getElementById('searchInputMobile').addEventListener('keypress', (e) => { if(e.key === 'Enter') handleSearch('searchInputMobile') });
 
             document.getElementById('mobileSearchToggle').addEventListener('click', () => {
                 const container = document.getElementById('mobileSearchContainer');
@@ -529,5 +456,4 @@
         }
     </script>
 </body>
-
 </html>
