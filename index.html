@@ -582,7 +582,7 @@
                     ` : ''}
                     
                     <div class="relative overflow-hidden aspect-square">
-                        <img src="${product.imageUrl}" alt="${product.productName}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        <img src="${image}" alt="${name}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" onerror="this.onerror=null; this.src='https://via.placeholder.com/300?text=Sem+Imagem';">
                         ${trendBadge}
                     </div>
                         <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
