@@ -131,15 +131,15 @@
             <!-- FILTROS RÁPIDOS (NOVO) -->
             <div class="flex flex-col md:flex-row gap-3 mt-3 items-center justify-between">
                 <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar w-full md:w-auto">
-                    <button onclick="fetchProducts('achadinhos', 'Achadinhos até R$20 💸', null, 20)"
+                    <button onclick="fetchProducts('promoção', 'Achadinhos até R$20 💸', null, 20)"
                         class="whitespace-nowrap px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-bold hover:bg-green-200 transition-colors shadow-sm border border-green-200 flex items-center gap-2">
                         <i class="fas fa-search-dollar"></i> Até R$ 20,00
                     </button>
-                    <button onclick="fetchProducts('frete gratis', 'Frete Grátis 🚚', null, null, true)"
+                    <button onclick="fetchProducts('frete', 'Frete Grátis 🚚', null, null, true)"
                         class="whitespace-nowrap px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-bold hover:bg-blue-200 transition-colors shadow-sm border border-blue-200 flex items-center gap-2">
                         <i class="fas fa-truck"></i> Com Frete Grátis
                     </button>
-                    <button onclick="fetchProducts('ofertas relampago', '⚡ Ofertas Relâmpago', null)"
+                    <button onclick="fetchProducts('ofertas', '⚡ Ofertas Relâmpago', null)"
                         class="whitespace-nowrap px-4 py-2 bg-yellow-100 text-yellow-700 rounded-full text-sm font-bold hover:bg-yellow-200 transition-colors shadow-sm border border-yellow-200 flex items-center gap-2">
                         <i class="fas fa-bolt"></i> Relâmpago
                     </button>
@@ -321,15 +321,22 @@
     <script>
         // CONFIGURAÇÃO DAS CATEGORIAS
         const categories = [
-            { name: "Casa & Cozinha", icon: "fa-couch", color: "text-green-500 bg-green-50", query: "casa cozinha utilidades", id: 100190 }, // Utensílios de Cozinha
             { name: "Tecnologia", icon: "fa-mobile-alt", color: "text-blue-500 bg-blue-50", query: "celular", id: 100073 }, // Celulares e Smartphones
-            { name: "Moda Feminina", icon: "fa-tshirt", color: "text-purple-500 bg-purple-50", query: "moda", id: 100001 }, // Roupas Femininas (Genérico)
-            { name: "Beleza & Cuidados", icon: "fa-spa", color: "text-pink-500 bg-pink-50", query: "beleza", id: 100661 }, // Perfumes
+            { name: "Consoles & Jogos", icon: "fa-gamepad", color: "text-purple-600 bg-purple-50", query: "console playstation xbox nintendo", id: 101073 }, // Consoles
+            { name: "Áudio & Som", icon: "fa-headphones", color: "text-gray-800 bg-gray-100", query: "fones caixa de som", id: 100578 }, // Áudio
+            { name: "Moda Feminina", icon: "fa-female", color: "text-pink-500 bg-pink-50", query: "moda feminina vestido", id: 100001 }, // Roupas Femininas (Genérico)
+            { name: "Moda Masculina", icon: "fa-male", color: "text-blue-700 bg-blue-50", query: "moda masculina camisa", id: 100242 }, // Blusas Masculinas (Proxy para Moda Masc.)
+            { name: "Beleza & Cuidados", icon: "fa-spa", color: "text-rose-500 bg-rose-50", query: "beleza maquiagem skincare", id: 100661 }, // Perfumes
             { name: "Saúde & Bem-estar", icon: "fa-heartbeat", color: "text-red-500 bg-red-50", query: "saude suplementos bem-estar", id: 100003 }, // Suplementos
             { name: "Esportes & Lazer", icon: "fa-running", color: "text-orange-500 bg-orange-50", query: "esportes fitness lazer", id: 101890 }, // Academia
-            { name: "Brinquedos & Hobbies", icon: "fa-gamepad", color: "text-yellow-500 bg-yellow-50", query: "brinquedos jogos hobbies", id: 101400 }, // Jogos
+            { name: "Brinquedos & Hobbies", icon: "fa-puzzle-piece", color: "text-yellow-500 bg-yellow-50", query: "brinquedos jogos hobbies", id: 101400 }, // Jogos
+            { name: "Bebês & Infantil", icon: "fa-baby", color: "text-cyan-400 bg-cyan-50", query: "bebe fraldas", id: 101001 }, // Fraldas (Bebês)
             { name: "Papelaria & Escritório", icon: "fa-pen-nib", color: "text-indigo-500 bg-indigo-50", query: "papelaria escritorio material escolar", id: 101337 }, // Canetas
-            { name: "Automotivo", icon: "fa-car", color: "text-gray-500 bg-gray-50", query: "acessorios carro moto", id: 101415 } // Acessórios Carro
+            { name: "Automotivo", icon: "fa-car", color: "text-gray-500 bg-gray-50", query: "acessorios carro moto", id: 101415 }, // Acessórios Carro
+            { name: "Casa & Cozinha", icon: "fa-couch", color: "text-green-500 bg-green-50", query: "casa cozinha utilidades", id: 100190 }, // Utensílios de Cozinha
+            { name: "Eletrodomésticos", icon: "fa-blender", color: "text-teal-600 bg-teal-50", query: "eletrodomesticos aspirador", id: 100171 }, // Pequenos Eletro
+            { name: "Decoração", icon: "fa-paint-roller", color: "text-amber-700 bg-amber-50", query: "decoracao casa", id: 101153 }, // Decoração
+            { name: "Pets", icon: "fa-paw", color: "text-yellow-700 bg-yellow-100", query: "pet shop cachorro gato", id: 100916 } // Acessórios Pet
         ];
 
         document.addEventListener('DOMContentLoaded', () => {
