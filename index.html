@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AlfaShop | Seu Shopping Online Inteligente</title>
     
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- FontAwesome -->
@@ -253,7 +253,7 @@
                 </div>
             `;
 
-            // CORREÇÃO: "name" trocado por "productName"
+            // Campo correto: productName
             const queryPayload = {
                 query: `
                     query($keyword: String) {
@@ -284,7 +284,7 @@
 
                 const contentType = response.headers.get("content-type");
                 if (contentType && contentType.indexOf("application/json") === -1) {
-                    throw new Error(`Erro 404: O Backend não foi encontrado. A pasta 'api' foi enviada?`);
+                    throw new Error(`Erro 404: O Backend não foi encontrado.`);
                 }
 
                 if (!response.ok) {
@@ -320,7 +320,7 @@
                 }
 
                 const filtered = mockProducts.filter(p => 
-                    p.productName.toLowerCase().includes(keyword.toLowerCase()) || 
+                    (p.productName || "").toLowerCase().includes(keyword.toLowerCase()) || 
                     keyword === 'best sellers'
                 );
                 const itemsToShow = filtered.length > 0 ? filtered : mockProducts;
@@ -344,11 +344,24 @@
             resultsText.innerText = `Exibindo ${items.length} ofertas.`;
             
             grid.innerHTML = items.map(product => {
-                // CORREÇÃO: Mapeando "productName"
                 const name = product.productName || product.name || "Produto sem nome";
-                const price = product.price || product.priceMin || 99.90;
-                const oldPrice = product.priceMax > price ? product.priceMax : (price * 1.2);
-                const discount = oldPrice ? Math.round(((oldPrice - price) / oldPrice) * 100) : 0;
+                
+                // CORREÇÃO CRÍTICA: Converte string para número (parseFloat)
+                // Se falhar, usa 0 como padrão
+                const rawPrice = product.price || product.priceMin || 99.90;
+                let price = parseFloat(rawPrice);
+                if (isNaN(price)) price = 99.90;
+
+                const rawOldPrice = product.priceMax;
+                let oldPrice = parseFloat(rawOldPrice);
+                
+                // Se preço antigo for inválido ou menor que o atual, gera um fake maior
+                if (isNaN(oldPrice) || oldPrice <= price) {
+                    oldPrice = price * 1.2;
+                }
+
+                const discount = Math.round(((oldPrice - price) / oldPrice) * 100);
+                
                 const rating = product.ratingStar || 5;
                 const image = product.imageUrl || 'https://via.placeholder.com/300?text=Sem+Imagem';
                 const link = product.offerLink || '#';
