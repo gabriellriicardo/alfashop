@@ -109,12 +109,15 @@
         <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between gap-4">
                 <a href="#" class="flex items-center gap-2 group" onclick="resetFilters(); return false;">
-                    <div class="bg-brand-orange text-white p-2 rounded-lg group-hover:rotate-3 transition-transform">
-                        <i class="fas fa-shopping-bag text-xl"></i>
+                    <div
+                        class="bg-brand-orange text-white p-1.5 md:p-2 rounded-lg group-hover:rotate-3 transition-transform">
+                        <i class="fas fa-shopping-bag text-lg md:text-xl"></i>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-xl font-bold tracking-tight text-brand-dark leading-none">AlfaShop</span>
-                        <span class="text-[10px] text-gray-500 uppercase tracking-widest">Oficial Store</span>
+                        <span
+                            class="text-lg md:text-xl font-bold tracking-tight text-brand-dark leading-none">AlfaShop</span>
+                        <span class="text-[9px] md:text-[10px] text-gray-500 uppercase tracking-widest">Oficial
+                            Store</span>
                     </div>
                 </a>
 
@@ -128,8 +131,8 @@
                 </div>
             </div>
 
-            <!-- FILTROS RÁPIDOS (NOVO) -->
-            <div class="flex flex-col md:flex-row gap-3 mt-3 items-center justify-between">
+            <!-- FILTROS RÁPIDOS (Desktop) -->
+            <div class="hidden md:flex flex-col md:flex-row gap-3 mt-3 items-center justify-between">
                 <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar w-full md:w-auto">
 
                     <button onclick="fetchProducts('promoção', 'Achadinhos até R$20 💸', null, 20)"
@@ -236,28 +239,28 @@
             </div>
 
             <!-- Grid -->
-            <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-4">
                 <!-- Skeleton Loading Inicial -->
-                <div class="bg-white rounded-xl p-4 shadow-sm h-80 flex flex-col gap-3">
-                    <div class="w-full h-40 rounded-lg shimmer"></div>
-                    <div class="w-3/4 h-4 rounded shimmer"></div>
-                    <div class="w-1/2 h-4 rounded shimmer"></div>
+                <div class="bg-white rounded-xl p-2 md:p-4 shadow-sm h-64 md:h-80 flex flex-col gap-2">
+                    <div class="w-full h-32 md:h-40 rounded-lg shimmer"></div>
+                    <div class="w-3/4 h-3 md:h-4 rounded shimmer"></div>
+                    <div class="w-1/2 h-3 md:h-4 rounded shimmer"></div>
                 </div>
                 <!-- Repetir esqueleto -->
-                <div class="bg-white rounded-xl p-4 shadow-sm h-80 flex flex-col gap-3">
-                    <div class="w-full h-40 rounded-lg shimmer"></div>
-                    <div class="w-3/4 h-4 rounded shimmer"></div>
-                    <div class="w-1/2 h-4 rounded shimmer"></div>
+                <div class="bg-white rounded-xl p-2 md:p-4 shadow-sm h-64 md:h-80 flex flex-col gap-2">
+                    <div class="w-full h-32 md:h-40 rounded-lg shimmer"></div>
+                    <div class="w-3/4 h-3 md:h-4 rounded shimmer"></div>
+                    <div class="w-1/2 h-3 md:h-4 rounded shimmer"></div>
                 </div>
-                <div class="bg-white rounded-xl p-4 shadow-sm h-80 flex flex-col gap-3">
-                    <div class="w-full h-40 rounded-lg shimmer"></div>
-                    <div class="w-3/4 h-4 rounded shimmer"></div>
-                    <div class="w-1/2 h-4 rounded shimmer"></div>
+                <div class="bg-white rounded-xl p-2 md:p-4 shadow-sm h-64 md:h-80 flex flex-col gap-2">
+                    <div class="w-full h-32 md:h-40 rounded-lg shimmer"></div>
+                    <div class="w-3/4 h-3 md:h-4 rounded shimmer"></div>
+                    <div class="w-1/2 h-3 md:h-4 rounded shimmer"></div>
                 </div>
-                <div class="bg-white rounded-xl p-4 shadow-sm h-80 flex flex-col gap-3">
-                    <div class="w-full h-40 rounded-lg shimmer"></div>
-                    <div class="w-3/4 h-4 rounded shimmer"></div>
-                    <div class="w-1/2 h-4 rounded shimmer"></div>
+                <div class="bg-white rounded-xl p-2 md:p-4 shadow-sm h-64 md:h-80 flex flex-col gap-2">
+                    <div class="w-full h-32 md:h-40 rounded-lg shimmer"></div>
+                    <div class="w-3/4 h-3 md:h-4 rounded shimmer"></div>
+                    <div class="w-1/2 h-3 md:h-4 rounded shimmer"></div>
                 </div>
             </div>
 
@@ -321,23 +324,24 @@
     <!-- JAVASCRIPT -->
     <script>
         // CONFIGURAÇÃO DAS CATEGORIAS
+        // CONFIGURAÇÃO DAS CATEGORIAS (IDs ATUALIZADOS)
         const categories = [
-            { name: "Tecnologia", icon: "fa-mobile-alt", color: "text-blue-500 bg-blue-50", query: "celular", id: 100073 }, // Celulares e Smartphones
-            { name: "Consoles & Jogos", icon: "fa-gamepad", color: "text-purple-600 bg-purple-50", query: "console playstation xbox nintendo", id: 101073 }, // Consoles
-            { name: "Áudio & Som", icon: "fa-headphones", color: "text-gray-800 bg-gray-100", query: "fones caixa de som", id: 100578 }, // Áudio
-            { name: "Moda Feminina", icon: "fa-female", color: "text-pink-500 bg-pink-50", query: "moda feminina vestido", id: 100001 }, // Roupas Femininas (Genérico)
-            { name: "Moda Masculina", icon: "fa-male", color: "text-blue-700 bg-blue-50", query: "moda masculina camisa", id: 100242 }, // Blusas Masculinas (Proxy para Moda Masc.)
-            { name: "Beleza & Cuidados", icon: "fa-spa", color: "text-rose-500 bg-rose-50", query: "beleza maquiagem skincare", id: 100661 }, // Perfumes
-            { name: "Saúde & Bem-estar", icon: "fa-heartbeat", color: "text-red-500 bg-red-50", query: "saude suplementos bem-estar", id: 100003 }, // Suplementos
-            { name: "Esportes & Lazer", icon: "fa-running", color: "text-orange-500 bg-orange-50", query: "esportes fitness lazer", id: 101890 }, // Academia
-            { name: "Brinquedos & Hobbies", icon: "fa-puzzle-piece", color: "text-yellow-500 bg-yellow-50", query: "brinquedos jogos hobbies", id: 101400 }, // Jogos
-            { name: "Bebês & Infantil", icon: "fa-baby", color: "text-cyan-400 bg-cyan-50", query: "bebe fraldas", id: 101001 }, // Fraldas (Bebês)
-            { name: "Papelaria & Escritório", icon: "fa-pen-nib", color: "text-indigo-500 bg-indigo-50", query: "papelaria escritorio material escolar", id: 101337 }, // Canetas
-            { name: "Automotivo", icon: "fa-car", color: "text-gray-500 bg-gray-50", query: "acessorios carro moto", id: 101415 }, // Acessórios Carro
-            { name: "Casa & Cozinha", icon: "fa-couch", color: "text-green-500 bg-green-50", query: "casa cozinha utilidades", id: 100190 }, // Utensílios de Cozinha
-            { name: "Eletrodomésticos", icon: "fa-blender", color: "text-teal-600 bg-teal-50", query: "eletrodomesticos aspirador", id: 100171 }, // Pequenos Eletro
-            { name: "Decoração", icon: "fa-paint-roller", color: "text-amber-700 bg-amber-50", query: "decoracao casa", id: 101153 }, // Decoração
-            { name: "Pets", icon: "fa-paw", color: "text-yellow-700 bg-yellow-100", query: "pet shop cachorro gato", id: 100916 } // Acessórios Pet
+            { name: "Tecnologia", icon: "fa-mobile-alt", color: "text-blue-500 bg-blue-50", query: "celular iphone xiaomi", id: 100073 },
+            { name: "Jogos", icon: "fa-gamepad", color: "text-purple-600 bg-purple-50", query: "console controle gamer", id: 101073 },
+            { name: "Moda Fem.", icon: "fa-female", color: "text-pink-500 bg-pink-50", query: "roupa feminina vestido blusa", id: 100104 }, // Usando ID de Vestidos (100104) que é forte
+            { name: "Moda Masc.", icon: "fa-male", color: "text-blue-700 bg-blue-50", query: "roupa masculina camisa", id: 100242 },
+            { name: "Sapatos", icon: "fa-shoe-prints", color: "text-amber-500 bg-amber-50", query: "tenis sapato", id: 100085 }, // Calçados Fem (100085)
+            { name: "Beleza", icon: "fa-spa", color: "text-rose-500 bg-rose-50", query: "maquiagem skincare perfume", id: 101627 }, // Maquiagem (101627)
+            { name: "Casa", icon: "fa-couch", color: "text-green-500 bg-green-50", query: "decoracao casa cozinha", id: 101153 }, // Decoração (101153)
+            { name: "Cozinha", icon: "fa-blender", color: "text-teal-600 bg-teal-50", query: "eletrodomesticos cozinha", id: 100190 }, // Eletro Cozinha (100190)
+            { name: "Esportes", icon: "fa-running", color: "text-orange-500 bg-orange-50", query: "fitness academia esporte", id: 101890 },
+            { name: "Brinquedos", icon: "fa-puzzle-piece", color: "text-yellow-500 bg-yellow-50", query: "brinquedo jogo", id: 101007 }, // Brinquedos (101007)
+            { name: "Bebês", icon: "fa-baby", color: "text-cyan-400 bg-cyan-50", query: "fralda bebe", id: 101001 },
+            { name: "Papelaria", icon: "fa-pen-nib", color: "text-indigo-500 bg-indigo-50", query: "papelaria material escolar", id: 101337 },
+            { name: "Automotivo", icon: "fa-car", color: "text-gray-500 bg-gray-50", query: "carro moto acessorios", id: 101415 },
+            { name: "Pets", icon: "fa-paw", color: "text-yellow-700 bg-yellow-100", query: "pet cachorro gato", id: 100916 },
+            { name: "Áudio", icon: "fa-headphones", color: "text-gray-800 bg-gray-100", query: "fone de ouvido som", id: 100578 },
+            { name: "Relógios", icon: "fa-clock", color: "text-slate-600 bg-slate-100", query: "relogio smartwatch", id: 100574 } // Relógios Masc (100574)
         ];
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -625,8 +629,8 @@
                             </a>
                         </div>
 
-                <div class="p-3 flex flex-col flex-grow">
-                    <h3 class="text-sm text-gray-700 font-medium line-clamp-2 mb-1 min-h-[40px] leading-tight" title="${name}">
+                <div class="p-2 md:p-3 flex flex-col flex-grow">
+                    <h3 class="text-xs md:text-sm text-gray-700 font-medium line-clamp-2 mb-1 min-h-[32px] md:min-h-[40px] leading-tight" title="${name}">
                         ${name}
                     </h3>
 
