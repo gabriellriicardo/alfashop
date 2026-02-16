@@ -437,32 +437,32 @@
             `).join('');
 
             // CORREÇÃO: Removido 'shopLocation' e 'price' (deprecated) que causavam erro na API
+            // CORREÇÃO: Removido 'shopType' dos argumentos da Query (API não suporta), mas mantido no retorno para filtro client-side
             const queryPayload = {
                 query: `
-                    query($keyword: String, $categoryId: Int, $sortType: Int, $listType: Int, $shopType: [Int]) {
-                        productOfferV2(keyword: $keyword, productCatId: $categoryId, sortType: $sortType, listType: $listType, shopType: $shopType, limit: 50) {
-                            nodes {
-                                itemId
-                                productName
-                                shopName
-                                shopType
-                                imageUrl
-                                priceMin
-                                priceMax
-                                ratingStar
-                                sales
-                                offerLink
-                                productCatIds
-                            }
-                        }
+            query($keyword: String, $categoryId: Int, $sortType: Int, $listType: Int) {
+                productOfferV2(keyword: $keyword, productCatId: $categoryId, sortType: $sortType, listType: $listType, limit: 50) {
+                    nodes {
+                        itemId
+                        productName
+                        shopName
+                        shopType
+                        imageUrl
+                        priceMin
+                        priceMax
+                        ratingStar
+                        sales
+                        offerLink
+                        productCatIds
                     }
-                `,
+                }
+            }
+        `,
                 variables: {
                     keyword: listType ? null : keyword, // Se tem listType, zera keyword
                     categoryId: listType ? null : (categoryId ? parseInt(categoryId) : null),
                     sortType: listType ? null : (sortType ? parseInt(sortType) : null),
-                    listType: listType ? parseInt(listType) : null,
-                    shopType: shopType
+                    listType: listType ? parseInt(listType) : null
                 }
             };
 
@@ -494,6 +494,16 @@
                     // Filtragem Client-Side por Preço Máximo (já que a API não aceitou priceMax)
                     if (priceMax) {
                         products = products.filter(p => p.priceMin <= priceMax);
+                    }
+
+                    // Filtragem Client-Side por Shop Type (Oficial/Indicada)
+                    // A API não suporta shopType no filtro, então filtramos manualmente aqui
+                    if (shopType && shopType.length > 0) {
+                        products = products.filter(p => {
+                            if (!p.shopType) return false;
+                            // Verifica se algum dos tipos desejados está presente nos tipos da loja
+                            return shopType.some(t => p.shopType.includes(t));
+                        });
                     }
 
                     renderProducts(products, freeShipping);
