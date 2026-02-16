@@ -294,8 +294,8 @@
             const statusDiv = document.getElementById('apiStatus');
             const statusText = document.getElementById('apiStatusText');
             
-            // Loading com mais itens
-            grid.innerHTML = Array(10).fill(0).map(() => `
+            // Loading com mais itens (20 itens para preencher tela)
+            grid.innerHTML = Array(20).fill(0).map(() => `
                 <div class="bg-white rounded-xl p-4 shadow-sm h-80 flex flex-col gap-3">
                     <div class="w-full h-40 rounded-lg shimmer"></div>
                     <div class="w-3/4 h-4 rounded shimmer"></div>
@@ -303,11 +303,11 @@
                 </div>
             `).join('');
 
-            // AUMENTO DO LIMITE PARA 60 PRODUTOS
+            // CORREÇÃO: Limite máximo permitido pela API é 50
             const queryPayload = {
                 query: `
                     query($keyword: String) {
-                        productOfferV2(keyword: $keyword, limit: 60) {
+                        productOfferV2(keyword: $keyword, limit: 50) {
                             nodes {
                                 itemId
                                 productName
@@ -375,7 +375,7 @@
                 );
                 // Se o filtro mock retornar pouco, concatena para parecer cheio
                 const itemsToShow = filtered.length > 0 ? filtered : mockProducts;
-                renderProducts([...itemsToShow, ...itemsToShow]); // Duplica para parecer que tem mais
+                renderProducts([...itemsToShow, ...itemsToShow, ...itemsToShow]); // Triplica para parecer que tem mais
             }
         }
 
