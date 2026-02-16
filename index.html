@@ -126,9 +126,11 @@
                         <i class="fas fa-search text-sm"></i>
                     </button>
                 </div>
+            </div>
 
-                <!-- FILTROS RÁPIDOS (NOVO) -->
-                <div class="flex gap-2 overflow-x-auto pb-2 mt-3 no-scrollbar">
+            <!-- FILTROS RÁPIDOS (NOVO) -->
+            <div class="flex flex-col md:flex-row gap-3 mt-3 items-center justify-between">
+                <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar w-full md:w-auto">
                     <button onclick="fetchProducts('achadinhos', 'Achadinhos até R$20 💸', null, 20)"
                         class="whitespace-nowrap px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-bold hover:bg-green-200 transition-colors shadow-sm border border-green-200 flex items-center gap-2">
                         <i class="fas fa-search-dollar"></i> Até R$ 20,00
@@ -141,6 +143,19 @@
                         class="whitespace-nowrap px-4 py-2 bg-yellow-100 text-yellow-700 rounded-full text-sm font-bold hover:bg-yellow-200 transition-colors shadow-sm border border-yellow-200 flex items-center gap-2">
                         <i class="fas fa-bolt"></i> Relâmpago
                     </button>
+                </div>
+
+                <!-- ORDENAÇÃO (NOVO) -->
+                <div class="flex items-center gap-2 min-w-[200px]">
+                    <i class="fas fa-sort text-gray-400"></i>
+                    <select id="sortSelect" onchange="applySort()"
+                        class="bg-white border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-brand-orange focus:border-brand-orange block w-full p-2 outline-none">
+                        <option value="">Relevância</option>
+                        <option value="5">🔥 Mais Populares (Vendidos)</option>
+                        <option value="1">💰 Menor Preço</option>
+                        <option value="2">💎 Maior Preço</option>
+                        <option value="3">🆕 Mais Recentes</option>
+                    </select>
                 </div>
             </div>
             <div class="flex items-center gap-3 sm:gap-6">
@@ -160,7 +175,6 @@
                     <i class="fas fa-search"></i>
                 </button>
             </div>
-        </div>
         </div>
     </header>
 
@@ -338,12 +352,41 @@
             `).join('');
         }
 
+        let currentKeyword = ''; // Variável global para guardar a busca atual
+        let currentCustomTitle = null;
+        let currentCategoryId = null;
+        let currentPriceMax = null;
+        let currentFreeShipping = false;
+
+        function applySort() {
+            const sortType = document.getElementById('sortSelect').value;
+            // Rechama a busca com os parâmetros atuais e o novo sortType
+            fetchProducts(currentKeyword, currentCustomTitle, currentCategoryId, currentPriceMax, currentFreeShipping, sortType);
+        }
+
         // --- FUNÇÃO DE BUSCA (APENAS API REAL) ---
-        async function fetchProducts(keyword, customTitle = null, categoryId = null, priceMax = null, freeShipping = false) {
+        async function fetchProducts(keyword, customTitle = null, categoryId = null, priceMax = null, freeShipping = false, sortType = null) {
+
+            // Atualiza estado global
+            currentKeyword = keyword;
+            currentCustomTitle = customTitle;
+            currentCategoryId = categoryId;
+            currentPriceMax = priceMax;
+            currentFreeShipping = freeShipping;
+
             const grid = document.getElementById('productsGrid');
             const statusDiv = document.getElementById('apiStatus');
             const statusText = document.getElementById('apiStatusText');
             const sectionTitle = document.getElementById('sectionTitle');
+            const sortSelect = document.getElementById('sortSelect');
+
+            // Se sortType for passado diretamente (ex: inicial), atualiza o select
+            if (sortType && sortSelect.value !== sortType) {
+                sortSelect.value = sortType;
+            } else if (!sortType) {
+                // Se não veio sortType, usa o do select (caso o usuário tenha mudado e clicado em outro filtro)
+                sortType = sortSelect.value;
+            }
 
             if (customTitle) {
                 sectionTitle.innerHTML = `<i class="fas fa-star text-yellow-500"></i> ${customTitle}`;
@@ -367,8 +410,8 @@
             // CORREÇÃO: Removido 'shopLocation' que causava erro na API
             const queryPayload = {
                 query: `
-                    query($keyword: String, $categoryId: Int, $priceMax: Float) {
-                        productOfferV2(keyword: $keyword, productCatId: $categoryId, priceMax: $priceMax, limit: 50) {
+                    query($keyword: String, $categoryId: Int, $priceMax: Float, $sortType: Int) {
+                        productOfferV2(keyword: $keyword, productCatId: $categoryId, priceMax: $priceMax, sortType: $sortType, limit: 50) {
                             nodes {
                                 itemId
                                 productName
@@ -388,7 +431,8 @@
                 variables: {
                     keyword: keyword,
                     categoryId: categoryId ? parseInt(categoryId) : null,
-                    priceMax: priceMax ? parseFloat(priceMax) : null
+                    priceMax: priceMax ? parseFloat(priceMax) : null,
+                    sortType: sortType ? parseInt(sortType) : null
                 }
             };
 
@@ -487,7 +531,7 @@
                 const rating = product.ratingStar || 5;
                 const image = product.imageUrl || 'https://via.placeholder.com/300?text=Sem+Imagem';
                 const link = product.offerLink || '#';
-                const sales = product.sales || 'Novo';
+                const sales = product.sales || 0; // Garante número
 
                 // Determine if free shipping badge should be shown
                 let freeShippingBadge = '';
@@ -500,18 +544,41 @@
                     `;
                 }
 
+                // Badge de "Mais de 10k vendidos" ou "Trending"
+                let trendBadge = '';
+                if (sales >= 10000) {
+                    trendBadge = `
+                        <div class="absolute bottom-2 left-2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-lg z-10 flex items-center gap-1 animate-pulse">
+                            <i class="fas fa-fire"></i> +10 MIL VENDIDOS
+                        </div>
+                    `;
+                } else if (sales >= 1000) {
+                    trendBadge = `
+                        <div class="absolute bottom-2 left-2 bg-black/60 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm z-10 backdrop-blur-sm">
+                            <i class="fas fa-chart-line"></i> ${sales / 1000}k vendidos
+                        </div>
+                    `;
+                } else if (sales > 0) {
+                    trendBadge = `
+                        <div class="absolute bottom-0 left-0 bg-black/70 text-white text-xs px-2 py-1 rounded-tr-lg backdrop-blur-sm">
+                           ${sales} vendidos
+                        </div>
+                    `;
+                }
+
                 return `
                 <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col group transition-all duration-300 relative h-full">
                     ${freeShippingBadge}
                     ${discount > 0 ? `
-                        <div class="absolute top-2 ${freeShippingBadge ? 'left-20' : 'left-2'} bg-brand-orange text-white text-[10px] font-bold px-2 py-1 rounded-sm z-10 shadow-sm">
+                        <div class="absolute top-2 ${freeShippingBadge ? 'left-24' : 'left-2'} bg-brand-orange text-white text-[10px] font-bold px-2 py-1 rounded-sm z-10 shadow-sm">
                             ${discount}% OFF
                         </div>
                     ` : ''}
                     
-                    <div class="relative w-full h-48 overflow-hidden bg-gray-100">
-                        <img src="${image}" alt="${name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://via.placeholder.com/300?text=Shopee'">
-                        
+                    <div class="relative overflow-hidden aspect-square">
+                        <img src="${product.imageUrl}" alt="${product.productName}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        ${trendBadge}
+                    </div>
                         <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                             <a href="${link}" target="_blank" class="bg-white text-brand-dark p-2 rounded-full hover:bg-brand-orange hover:text-white transition-colors shadow-lg transform translate-y-4 group-hover:translate-y-0 duration-300">
                                 <i class="fas fa-external-link-alt"></i>
