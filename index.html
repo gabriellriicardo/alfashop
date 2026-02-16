@@ -427,7 +427,7 @@
             fetchProducts(currentKeyword, currentCustomTitle, currentCategoryId, currentPriceMax, currentFreeShipping, sortType);
         }
 
-        let currentPage = 0;
+        let currentPage = 1; // Shopee usa paginação baseada em 1
 
         // --- FUNÇÃO DE BUSCA (APENAS API REAL) ---
         async function fetchProducts(keyword, customTitle = null, categoryId = null, priceMax = null, freeShipping = false, sortType = null, isLoadMore = false) {
@@ -439,7 +439,7 @@
                 currentCategoryId = categoryId;
                 currentPriceMax = priceMax;
                 currentFreeShipping = freeShipping;
-                currentPage = 0; // Reseta página
+                currentPage = 1; // Reseta para página 1
             }
 
             const grid = document.getElementById('productsGrid');
@@ -484,8 +484,8 @@
             // Query
             const queryPayload = {
                 query: `
-                    query($keyword: String, $categoryId: Int, $sortType: Int, $newest: Int) {
-                        productOfferV2(keyword: $keyword, productCatId: $categoryId, sortType: $sortType, newest: $newest, limit: 50) {
+                    query($keyword: String, $categoryId: Int, $sortType: Int, $page: Int) {
+                        productOfferV2(keyword: $keyword, productCatId: $categoryId, sortType: $sortType, page: $page, limit: 50) {
                             nodes {
                                 itemId
                                 productName
@@ -506,7 +506,7 @@
                     keyword: keyword,
                     categoryId: categoryId ? parseInt(categoryId) : null,
                     sortType: sortType ? parseInt(sortType) : null,
-                    newest: currentPage * 50 // Shopee usa 'newest' como offset (0, 50, 100...)
+                    page: currentPage // Envia página atual (1, 2, 3...)
                 }
             };
 
