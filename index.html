@@ -324,24 +324,24 @@
     <!-- JAVASCRIPT -->
     <script>
         // CONFIGURAÇÃO DAS CATEGORIAS
-        // CONFIGURAÇÃO DAS CATEGORIAS (IDs ATUALIZADOS)
+        // CONFIGURAÇÃO DAS CATEGORIAS (IDs Relaxados para garantir resultados)
         const categories = [
-            { name: "Tecnologia", icon: "fa-mobile-alt", color: "text-blue-500 bg-blue-50", query: "celular iphone xiaomi", id: 100073 },
-            { name: "Jogos", icon: "fa-gamepad", color: "text-purple-600 bg-purple-50", query: "console controle gamer", id: 101073 },
-            { name: "Moda Fem.", icon: "fa-female", color: "text-pink-500 bg-pink-50", query: "roupa feminina vestido blusa", id: 100104 }, // Usando ID de Vestidos (100104) que é forte
-            { name: "Moda Masc.", icon: "fa-male", color: "text-blue-700 bg-blue-50", query: "roupa masculina camisa", id: 100242 },
-            { name: "Sapatos", icon: "fa-shoe-prints", color: "text-amber-500 bg-amber-50", query: "tenis sapato", id: 100085 }, // Calçados Fem (100085)
-            { name: "Beleza", icon: "fa-spa", color: "text-rose-500 bg-rose-50", query: "maquiagem skincare perfume", id: 101627 }, // Maquiagem (101627)
-            { name: "Casa", icon: "fa-couch", color: "text-green-500 bg-green-50", query: "decoracao casa cozinha", id: 101153 }, // Decoração (101153)
-            { name: "Cozinha", icon: "fa-blender", color: "text-teal-600 bg-teal-50", query: "eletrodomesticos cozinha", id: 100190 }, // Eletro Cozinha (100190)
-            { name: "Esportes", icon: "fa-running", color: "text-orange-500 bg-orange-50", query: "fitness academia esporte", id: 101890 },
-            { name: "Brinquedos", icon: "fa-puzzle-piece", color: "text-yellow-500 bg-yellow-50", query: "brinquedo jogo", id: 101007 }, // Brinquedos (101007)
-            { name: "Bebês", icon: "fa-baby", color: "text-cyan-400 bg-cyan-50", query: "fralda bebe", id: 101001 },
-            { name: "Papelaria", icon: "fa-pen-nib", color: "text-indigo-500 bg-indigo-50", query: "papelaria material escolar", id: 101337 },
-            { name: "Automotivo", icon: "fa-car", color: "text-gray-500 bg-gray-50", query: "carro moto acessorios", id: 101415 },
-            { name: "Pets", icon: "fa-paw", color: "text-yellow-700 bg-yellow-100", query: "pet cachorro gato", id: 100916 },
-            { name: "Áudio", icon: "fa-headphones", color: "text-gray-800 bg-gray-100", query: "fone de ouvido som", id: 100578 },
-            { name: "Relógios", icon: "fa-clock", color: "text-slate-600 bg-slate-100", query: "relogio smartwatch", id: 100574 } // Relógios Masc (100574)
+            { name: "Tecnologia", icon: "fa-mobile-alt", color: "text-blue-500 bg-blue-50", query: "celular smartphone iphone xiaomi samsung", id: 100073 },
+            { name: "Jogos", icon: "fa-gamepad", color: "text-purple-600 bg-purple-50", query: "console videogame controle gamer", id: 101073 },
+            { name: "Moda Fem.", icon: "fa-female", color: "text-pink-500 bg-pink-50", query: "roupa feminina vestido blusa calça", id: null },
+            { name: "Moda Masc.", icon: "fa-male", color: "text-blue-700 bg-blue-50", query: "roupa masculina camisa camiseta bermuda", id: null },
+            { name: "Sapatos", icon: "fa-shoe-prints", color: "text-amber-500 bg-amber-50", query: "calcado tenis sapato sandalia", id: null },
+            { name: "Beleza", icon: "fa-spa", color: "text-rose-500 bg-rose-50", query: "beleza maquiagem skincare perfume batom", id: null },
+            { name: "Casa", icon: "fa-couch", color: "text-green-500 bg-green-50", query: "casa decoracao cozinha cama mesa banho", id: null },
+            { name: "Cozinha", icon: "fa-blender", color: "text-teal-600 bg-teal-50", query: "eletroportateis cozinha liquidificador airfryer", id: null },
+            { name: "Esportes", icon: "fa-running", color: "text-orange-500 bg-orange-50", query: "esporte fitness academia suplemento", id: null },
+            { name: "Brinquedos", icon: "fa-puzzle-piece", color: "text-yellow-500 bg-yellow-50", query: "brinquedo jogo infantil boneca carrinho", id: null },
+            { name: "Bebês", icon: "fa-baby", color: "text-cyan-400 bg-cyan-50", query: "bebe fralda lenço umedecido infantil", id: null }, // ID 101001 as vezes falha
+            { name: "Papelaria", icon: "fa-pen-nib", color: "text-indigo-500 bg-indigo-50", query: "papelaria material escolar caneta caderno", id: null },
+            { name: "Automotivo", icon: "fa-car", color: "text-gray-500 bg-gray-50", query: "acessorios carro moto capacete som automotivo", id: null },
+            { name: "Pets", icon: "fa-paw", color: "text-yellow-700 bg-yellow-100", query: "pet shop cachorro gato ração", id: null },
+            { name: "Áudio", icon: "fa-headphones", color: "text-gray-800 bg-gray-100", query: "fone de ouvido headset caixa de som bluetooth", id: null },
+            { name: "Relógios", icon: "fa-clock", color: "text-slate-600 bg-slate-100", query: "relogio smartwatch pulseira inteligente", id: null }
         ];
 
         document.addEventListener('DOMContentLoaded', () => {
