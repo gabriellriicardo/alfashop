@@ -1,0 +1,248 @@
+
+= ROUPAS FEMININAS =
+Blusas: 100350-100356
+  - Regatas: 100350
+  - Top faixa e Croppeds: 100351
+  - Camisetas: 100352
+  - Camisas e Blusas: 100353
+  - Camisas Polo: 100354
+  - Body: 100355
+  - Outros: 100356
+
+Calças e Leggings: 100357-100359
+  - Leggings e Treggings: 100357
+  - Calças: 100358
+  - Outros: 100359
+
+Shorts: 100360-100362
+  - Shorts: 100360
+  - Short saia: 100361
+  - Outros: 100362
+
+Saias: 100102
+Jeans: 100103
+Vestidos: 100104
+Vestidos de Casamento: 100105
+
+Macacões, Macaquinhos e Jardineiras: 100363-100366
+  - Macacão: 100363
+  - Macaquinhos: 100364
+  - Jardineiras: 100365
+  - Outros: 100366
+
+Jaquetas, Casacos e Coletes: 100367-100372
+  - Jaquetas e Casacos de Inverno: 100367
+  - Capas: 100368
+  - Blazers: 100369
+  - Jaquetas: 100370
+  - Coletes: 100371
+  - Outros: 100372
+
+Agasalhos e Cardigans: 100108
+
+Moletons e Suéteres: 100373-100375
+  - Suéteres: 100373
+  - Moletons: 100374
+  - Outros: 100375
+
+Conjuntos: 100376-100379
+  - Conjuntos de Casal: 100376
+  - Conjuntos de Família: 100377
+  - Conjuntos Individuais: 100378
+  - Outros: 100379
+
+Lingerie e Roupa Íntima: 100380-100526
+  - Conjuntos: 100380
+  - Sutiãs: 100381
+  - Calcinhas: 100382
+  - Roupa íntima térmica: 100383
+  - Acessórios de Sutiã (Alças): 100523
+  - Acessórios de Sutiã (Acolchoamento): 100524
+  - Acessórios de Sutiã (Adesivos): 100525
+  - Acessórios de Sutiã (Outros): 100526
+  - Cinta modeladora: 100385
+  - Calças de segurança: 100386
+  - Lingerie sexy: 100387
+  - Outros: 100388
+
+Traje para dormir e Pijamas: 100389-100392
+  - Pijamas: 100389
+  - Camisola: 100390
+  - Kimonos e Roupões: 100391
+  - Outros: 100392
+
+Roupas de Maternidade: 100393-100399
+  - Aleitamento: 100393-100396
+  - Conjuntos: 100397
+  - Calças: 100398
+  - Outros: 100399
+
+Roupas Tradicionais: 100400-100404
+Fantasias e Cosplay: 100115
+Outros: 100116
+Tecidos: 100407-100416
+Meias: 100417-100419
+
+= ROUPAS MASCULINAS =
+Jeans: 100047
+Moletons e Suéteres: 100226-100228
+Agasalhos e Cardigans: 100049
+Jaquetas, Casacos e Coletes: 100229-100232
+Ternos: 100233-100237
+Calças: 100238-100241
+Bermudas: 100053
+Blusas (Camisas, Polo, Camisetas): 100242-100246
+Roupa íntima e Pijamas: 100247-100056
+Conjuntos: 100057
+Roupas Tradicionais: 100251-100254
+Fantasias e Cosplay: 100059
+Vestuário Profissional: 100060
+
+= BELEZA =
+Cuidados com Mãos, Pés e Unhas: 101607-102178
+  - Mãos: 101607-101610
+  - Pés: 101611-101614
+  - Unhas (Esmaltes etc): 101615-102178
+  - Outros: 100868
+
+Cuidados com o Cabelo: 100869-100874
+  - Shampoo, Tinta, Tratamento, Condicionador, Estilo
+
+Cuidados Masculinos: 100875-100879
+  - Banho, Pele, Barba (101616-101626)
+
+Perfumes e Fragrâncias: 100661
+Maquiagem: 101627-101647
+  - Rosto (Base, Pó, Blush): 101627-101635
+  - Olhos (Sombra, Delineador, Rímel): 101636-101641
+  - Lábios (Batom, Gloss): 101642-101647
+  - Removedores: 100884
+
+Utensílios de Beleza: 101648-101668
+  - Pincéis, Espelhos, Cílios, Secadores
+  - Depilação: 100888
+
+Cuidados com a Pele: 100891-101676
+  - Rosto (Limpador, Hidratante, Máscara): 100891-100898
+  - Olhos: 101669-101672
+  - Lábios: 101673-101676
+  - Protetor Solar: 100901-100902
+  - Tratamento Acne: 100904
+
+Banho e Corpo: 102003-102013
+  - Sabonete, Esfoliante, Hidratante, Depilação
+
+= SAÚDE =
+Suplementos Alimentares: 100003-100007
+Suprimentos Médicos: 100420-100446
+  - Monitores (Pressão, Glicose): 100420-100424
+  - Primeiros Socorros: 100425-100429
+  - Máscaras e Luvas: 100128
+  - Apoio (Cadeira de Rodas etc): 100430-100434
+
+Cuidados Pessoais: 100131-100453
+  - Bucal (Escova, Pasta): 100438-100446
+  - Lentes de Contato: 100435
+  - Feminino (Absorventes etc): 100447-100453
+  - Fraldas Adultas: 100135
+
+Bem-Estar Sexual: 100140-100144
+
+= ACESSÓRIOS DE MODA =
+Joias: 100021-100029
+  - Anéis, Brincos, Colares, Pulseiras
+Acessórios de Cabelo: 100145-100150
+Óculos de Sol e Armações: 100151-100154
+Cintos: 100032
+Gravatas: 100033
+Relógios Femininos: 100573
+Relógios Masculinos: 100574
+
+= ELETRODOMÉSTICOS =
+Pequenos Eletrodomésticos: 100171-100178
+  - Telefones, Ferros de Passar, Aspiradores
+Grandes Eletrodomésticos: 100462-100467
+  - Máquinas de Lavar, Ar Condicionado, Ventiladores
+TVs e Acessórios: 100185-100189
+Utensílios de Cozinha (Elétricos): 100190-100474
+  - Air Fryer: 100198
+  - Cafeteiras: 100194
+  - Liquidificadores: 100193
+  - Micro-ondas: 100200
+  - Panelas Elétricas: 100205-100207
+  - Geladeiras: 100209
+
+= CELULARES E DISPOSITIVOS =
+Celulares: 100073
+Tablets: 100072
+Wearables (Smartwatches): 100270
+Acessórios Celular: 100475-100491
+  - Capas: 100490
+  - Carregadores e Cabos: 100479-100484
+  - Powerbanks: 100485
+  - Suportes: 100279
+  - Cartões de Memória: 100281
+
+Áudio: 100578-100628
+  - Fones de Ouvido: 100578
+  - Caixas de Som: 100625
+
+Câmeras e Drones: 101092-101126
+  - Câmeras: 101092-101099
+  - Drones: 100705
+  - Acessórios de Câmera: 101110-101120
+
+= COMPUTADORES E ACESSÓRIOS =
+Jogos e Consoles: 101073-101091
+  - Consoles (PS, Xbox, Nintendo): 101073-101081
+  - Jogos: 101082-101091
+
+= CASA E DECORAÇÃO =
+Móveis: 101166-101175
+  - Sofás, Cadeiras, Camas, Mesas
+Decoração: 101153-101165
+  - Cortinas, Tapetes, Espelhos, Quadros
+Iluminação: 100719
+Banheiros: 101131-101143
+Roupas de Cama: 101144-101152
+Cozinha e Jantar (Não Elétrico): 101216-101248
+  - Panelas: 101219
+  - Facas: 101228
+  - Copos, Pratos, Talheres
+Organizadores: 101253-101262
+Ferramentas e Construção: 101186-101209
+  - Ferramentas Manuais e Elétricas: 101794-101811
+Jardinagem: 101176-101185
+
+= ESPORTES E LAZER =
+Equipamentos Fitness: 101890-101896
+Ciclismo: 101824-101827
+Acampamento e Pesca: 101816-101838
+Esportes com Bola (Futebol, Basquete, Vôlei, Tênis): 101847-101868
+Natação e Mergulho: 101878-101885
+Skate e Patins: 101839
+
+= ANIMAIS DE ESTIMAÇÃO (PETS) =
+Ração (Cães, Gatos, Outros): 100906-100915
+Acessórios e Brinquedos: 100916-101686
+Higiene e Saúde: 100923-100944
+
+= BEBÊS E CRIANÇAS =
+Fraldas: 101001-101005
+Leite e Alimentação: 100991-101696
+Roupas de Bebê: 100945 (Viagem), 100968 (Banho)
+Brinquedos: 101007-101739
+
+= PAPELARIA E HOBBIES =
+Escrita e Correção: 101337-101342
+Material Escolar: 101343-101360
+Artes e Pintura: 101361-101370
+Colecionáveis: 101385-101394
+Instrumentos Musicais: 101410-102020
+
+= AUTOMOTIVO =
+Acessórios Carro: 101415-101431 (Interno), 101433-101442 (Externo)
+Peças de Carro: 101443-101905
+Acessórios Moto: 101473-101483
+Peças Moto: 101913-101920
+Capacetes e Vestuário Moto: 101488 (aprox., verificar lista completa se necessário)

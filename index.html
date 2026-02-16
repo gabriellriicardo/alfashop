@@ -127,24 +127,40 @@
                     </button>
                 </div>
 
-                <div class="flex items-center gap-3 sm:gap-6">
-                    <button class="relative text-gray-600 hover:text-brand-orange transition-colors md:hidden"
-                        id="mobileSearchToggle">
-                        <i class="fas fa-search text-xl"></i>
+                <!-- FILTROS RÁPIDOS (NOVO) -->
+                <div class="flex gap-2 overflow-x-auto pb-2 mt-3 no-scrollbar">
+                    <button onclick="fetchProducts('achadinhos', 'Achadinhos até R$20 💸', null, 20)"
+                        class="whitespace-nowrap px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-bold hover:bg-green-200 transition-colors shadow-sm border border-green-200 flex items-center gap-2">
+                        <i class="fas fa-search-dollar"></i> Até R$ 20,00
+                    </button>
+                    <button onclick="fetchProducts('frete gratis', 'Frete Grátis 🚚', null, null, true)"
+                        class="whitespace-nowrap px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-bold hover:bg-blue-200 transition-colors shadow-sm border border-blue-200 flex items-center gap-2">
+                        <i class="fas fa-truck"></i> Com Frete Grátis
+                    </button>
+                    <button onclick="fetchProducts('ofertas relampago', '⚡ Ofertas Relâmpago', null)"
+                        class="whitespace-nowrap px-4 py-2 bg-yellow-100 text-yellow-700 rounded-full text-sm font-bold hover:bg-yellow-200 transition-colors shadow-sm border border-yellow-200 flex items-center gap-2">
+                        <i class="fas fa-bolt"></i> Relâmpago
                     </button>
                 </div>
             </div>
+            <div class="flex items-center gap-3 sm:gap-6">
+                <button class="relative text-gray-600 hover:text-brand-orange transition-colors md:hidden"
+                    id="mobileSearchToggle">
+                    <i class="fas fa-search text-xl"></i>
+                </button>
+            </div>
+        </div>
 
-            <div id="mobileSearchContainer" class="hidden mt-3 md:hidden">
-                <div class="relative">
-                    <input type="text" id="searchInputMobile" placeholder="O que você procura hoje?"
-                        class="w-full pl-4 pr-10 py-3 rounded-lg border border-gray-200 bg-gray-50 focus:border-brand-orange outline-none text-sm">
-                    <button id="searchBtnMobile"
-                        class="absolute right-2 top-2 bottom-2 bg-brand-orange text-white rounded px-3 text-sm">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
+        <div id="mobileSearchContainer" class="hidden mt-3 md:hidden">
+            <div class="relative">
+                <input type="text" id="searchInputMobile" placeholder="O que você procura hoje?"
+                    class="w-full pl-4 pr-10 py-3 rounded-lg border border-gray-200 bg-gray-50 focus:border-brand-orange outline-none text-sm">
+                <button id="searchBtnMobile"
+                    class="absolute right-2 top-2 bottom-2 bg-brand-orange text-white rounded px-3 text-sm">
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
+        </div>
         </div>
     </header>
 
@@ -323,7 +339,7 @@
         }
 
         // --- FUNÇÃO DE BUSCA (APENAS API REAL) ---
-        async function fetchProducts(keyword, customTitle = null, categoryId = null) {
+        async function fetchProducts(keyword, customTitle = null, categoryId = null, priceMax = null, freeShipping = false) {
             const grid = document.getElementById('productsGrid');
             const statusDiv = document.getElementById('apiStatus');
             const statusText = document.getElementById('apiStatusText');
@@ -331,6 +347,8 @@
 
             if (customTitle) {
                 sectionTitle.innerHTML = `<i class="fas fa-star text-yellow-500"></i> ${customTitle}`;
+            } else if (priceMax) {
+                sectionTitle.innerHTML = `<i class="fas fa-wallet text-green-500"></i> Até R$ ${priceMax},00`;
             } else if (categoryId) {
                 sectionTitle.innerHTML = `<i class="fas fa-tag text-brand-orange"></i> Categoria: ${keyword}`;
             } else {
@@ -349,8 +367,8 @@
             // CORREÇÃO: Removido 'shopLocation' que causava erro na API
             const queryPayload = {
                 query: `
-                    query($keyword: String, $categoryId: Int) {
-                        productOfferV2(keyword: $keyword, productCatId: $categoryId, limit: 50) {
+                    query($keyword: String, $categoryId: Int, $priceMax: Float) {
+                        productOfferV2(keyword: $keyword, productCatId: $categoryId, priceMax: $priceMax, limit: 50) {
                             nodes {
                                 itemId
                                 productName
@@ -369,7 +387,8 @@
                 `,
                 variables: {
                     keyword: keyword,
-                    categoryId: categoryId ? parseInt(categoryId) : null
+                    categoryId: categoryId ? parseInt(categoryId) : null,
+                    priceMax: priceMax ? parseFloat(priceMax) : null
                 }
             };
 
@@ -396,7 +415,7 @@
                 }
 
                 if (data.data && data.data.productOfferV2 && data.data.productOfferV2.nodes) {
-                    renderProducts(data.data.productOfferV2.nodes);
+                    renderProducts(data.data.productOfferV2.nodes, freeShipping); // Pass freeShipping to renderProducts
                     statusDiv.classList.remove('hidden', 'bg-red-50', 'border-red-200', 'text-red-700', 'bg-yellow-50', 'border-yellow-200', 'text-yellow-700');
                     statusDiv.classList.add('bg-green-50', 'border-green-200', 'text-green-700');
                     statusText.innerHTML = `<strong>Sucesso:</strong> Exibindo resultados para "${keyword}".`;
@@ -433,7 +452,7 @@
             }
         }
 
-        function renderProducts(items) {
+        function renderProducts(items, freeShippingFilter = false) { // Added freeShippingFilter parameter
             const grid = document.getElementById('productsGrid');
             const noResults = document.getElementById('noResults');
             const resultsText = document.getElementById('resultsText');
@@ -470,10 +489,22 @@
                 const link = product.offerLink || '#';
                 const sales = product.sales || 'Novo';
 
+                // Determine if free shipping badge should be shown
+                let freeShippingBadge = '';
+                // Example condition: if freeShippingFilter is active OR product price is above a certain threshold
+                if (freeShippingFilter || price >= 20) {
+                    freeShippingBadge = `
+                        <div class="absolute top-2 left-2 bg-green-500 text-white text-[10px] font-bold px-2 py-1 rounded shadow-md z-10 flex items-center gap-1">
+                            <i class="fas fa-truck"></i> FRETE GRÁTIS
+                        </div>
+                    `;
+                }
+
                 return `
                 <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col group transition-all duration-300 relative h-full">
+                    ${freeShippingBadge}
                     ${discount > 0 ? `
-                        <div class="absolute top-2 left-2 bg-brand-orange text-white text-[10px] font-bold px-2 py-1 rounded-sm z-10 shadow-sm">
+                        <div class="absolute top-2 ${freeShippingBadge ? 'left-20' : 'left-2'} bg-brand-orange text-white text-[10px] font-bold px-2 py-1 rounded-sm z-10 shadow-sm">
                             ${discount}% OFF
                         </div>
                     ` : ''}
