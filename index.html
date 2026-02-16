@@ -240,13 +240,14 @@
     <!-- JAVASCRIPT -->
     <script>
         // --- DADOS FAKE (FALLBACK DE SEGURANÇA) ---
+        // Adicionei shopLocation para simular origens
         const mockProducts = [
-            { itemId: 1, productName: "Fone Bluetooth TWS (Exemplo)", shopName: "Audio Tech Store", price: 49.90, priceMax: 120.00, ratingStar: 4.8, sales: 1200, imageUrl: "https://images.unsplash.com/photo-1572569028738-411a78c1d166?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
-            { itemId: 2, productName: "Smartwatch Series 8 (Exemplo)", shopName: "Mundo dos Gadgets", price: 189.90, priceMax: 350.00, ratingStar: 4.7, sales: 850, imageUrl: "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
-            { itemId: 3, productName: "Tênis Runner (Exemplo)", shopName: "Sport Life Oficial", price: 129.90, priceMax: 199.90, ratingStar: 4.9, sales: 540, imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
-            { itemId: 4, productName: "Luminária LED (Exemplo)", shopName: "Casa & Conforto", price: 35.50, priceMax: 60.00, ratingStar: 4.5, sales: 2100, imageUrl: "https://images.unsplash.com/photo-1534073828943-f801091a7174?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
-            { itemId: 5, productName: "Câmera Wi-Fi (Exemplo)", shopName: "Segurança Total", price: 110.00, priceMax: 180.00, ratingStar: 4.6, sales: 320, imageUrl: "https://images.unsplash.com/photo-1557324232-b8917d3c3d63?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
-            { itemId: 6, productName: "Kit Ferramentas (Exemplo)", shopName: "Ferragens do Zé", price: 89.90, priceMax: 150.00, ratingStar: 4.8, sales: 150, imageUrl: "https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" }
+            { itemId: 1, productName: "Fone Bluetooth TWS (Exemplo)", shopName: "Audio Tech Store", shopLocation: "São Paulo, SP", price: 49.90, priceMax: 120.00, ratingStar: 4.8, sales: 1200, imageUrl: "https://images.unsplash.com/photo-1572569028738-411a78c1d166?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
+            { itemId: 2, productName: "Smartwatch Series 8 (Exemplo)", shopName: "Gadgets China", shopLocation: "Mainland China", price: 189.90, priceMax: 350.00, ratingStar: 4.7, sales: 850, imageUrl: "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
+            { itemId: 3, productName: "Tênis Runner (Exemplo)", shopName: "Sport Life Oficial", shopLocation: "Minas Gerais, MG", price: 129.90, priceMax: 199.90, ratingStar: 4.9, sales: 540, imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
+            { itemId: 4, productName: "Luminária LED (Exemplo)", shopName: "Casa & Conforto", shopLocation: "Rio de Janeiro, RJ", price: 35.50, priceMax: 60.00, ratingStar: 4.5, sales: 2100, imageUrl: "https://images.unsplash.com/photo-1534073828943-f801091a7174?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
+            { itemId: 5, productName: "Câmera Wi-Fi (Exemplo)", shopName: "Segurança Total", shopLocation: "Shenzhen, China", price: 110.00, priceMax: 180.00, ratingStar: 4.6, sales: 320, imageUrl: "https://images.unsplash.com/photo-1557324232-b8917d3c3d63?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
+            { itemId: 6, productName: "Kit Ferramentas (Exemplo)", shopName: "Ferragens do Zé", shopLocation: "Curitiba, PR", price: 89.90, priceMax: 150.00, ratingStar: 4.8, sales: 150, imageUrl: "https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" }
         ];
 
         // CONFIGURAÇÃO DAS CATEGORIAS
@@ -303,6 +304,7 @@
                                 itemId
                                 productName
                                 shopName
+                                shopLocation
                                 imageUrl
                                 price
                                 priceMin
@@ -389,6 +391,21 @@
             grid.innerHTML = items.map(product => {
                 const name = product.productName || product.name || "Produto sem nome";
                 const shop = product.shopName || "Shopee";
+                const location = product.shopLocation || "Brasil";
+                
+                // Lógica de Origem
+                let isInternational = false;
+                if(location.toLowerCase().includes('china') || 
+                   location.toLowerCase().includes('hong kong') || 
+                   location.toLowerCase().includes('korea') || 
+                   location.toLowerCase().includes('abroad') ||
+                   location.toLowerCase().includes('overseas')) {
+                    isInternational = true;
+                }
+
+                const originBadge = isInternational 
+                    ? `<span class="text-[9px] bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded border border-purple-200 flex items-center gap-1 font-bold"><i class="fas fa-plane"></i> Int.</span>`
+                    : `<span class="text-[9px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded border border-green-200 flex items-center gap-1 font-bold"><i class="fas fa-flag"></i> BR</span>`;
                 
                 const rawPrice = product.price || product.priceMin || 99.90;
                 let price = parseFloat(rawPrice);
@@ -431,11 +448,14 @@
                             ${name}
                         </h3>
                         
-                        <div class="flex items-center gap-1 mb-2">
-                            <div class="flex text-yellow-400 text-[10px]">
-                                ${generateStars(rating)}
+                        <div class="flex items-center justify-between gap-1 mb-2">
+                            <div class="flex items-center gap-1">
+                                <div class="flex text-yellow-400 text-[10px]">
+                                    ${generateStars(rating)}
+                                </div>
+                                <span class="text-[10px] text-gray-400">(${sales})</span>
                             </div>
-                            <span class="text-[10px] text-gray-400">(${sales} vendidos)</span>
+                            ${originBadge}
                         </div>
 
                         <div class="mt-auto pt-2 border-t border-gray-50">
