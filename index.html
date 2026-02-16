@@ -135,14 +135,6 @@
                         class="whitespace-nowrap px-4 py-2 bg-red-100 text-red-700 rounded-full text-sm font-bold hover:bg-red-200 transition-colors shadow-sm border border-red-200 flex items-center gap-2">
                         <i class="fas fa-fire"></i> Mais Vendidos
                     </button>
-                    <button onclick="fetchProducts(null, '👑 Lojas Oficiais', null, null, false, null, null, [1])"
-                        class="whitespace-nowrap px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold hover:bg-red-700 transition-colors shadow-sm border border-red-700 flex items-center gap-2">
-                        <i class="fas fa-crown"></i> Oficiais
-                    </button>
-                    <button onclick="fetchProducts(null, '⭐ Lojas Indicadas', null, null, false, null, null, [2, 4])"
-                        class="whitespace-nowrap px-4 py-2 bg-orange-500 text-white rounded-full text-sm font-bold hover:bg-orange-600 transition-colors shadow-sm border border-orange-600 flex items-center gap-2">
-                        <i class="fas fa-star"></i> Indicadas
-                    </button>
                     <button onclick="fetchProducts('promoção', 'Achadinhos até R$20 💸', null, 20)"
                         class="whitespace-nowrap px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-bold hover:bg-green-200 transition-colors shadow-sm border border-green-200 flex items-center gap-2">
                         <i class="fas fa-search-dollar"></i> Até R$ 20,00
@@ -386,7 +378,7 @@
         }
 
         // --- FUNÇÃO DE BUSCA (APENAS API REAL) ---
-        async function fetchProducts(keyword, customTitle = null, categoryId = null, priceMax = null, freeShipping = false, sortType = null, listType = null, shopType = null) {
+        async function fetchProducts(keyword, customTitle = null, categoryId = null, priceMax = null, freeShipping = false, sortType = null, listType = null) {
 
             // Atualiza estado global
             currentKeyword = keyword;
@@ -395,7 +387,6 @@
             currentPriceMax = priceMax;
             currentFreeShipping = freeShipping;
             currentListType = listType;
-            currentShopType = shopType;
 
             const grid = document.getElementById('productsGrid');
             const statusDiv = document.getElementById('apiStatus');
@@ -436,27 +427,25 @@
                 </div>
             `).join('');
 
-            // CORREÇÃO: Removido 'shopLocation' e 'price' (deprecated) que causavam erro na API
-            // CORREÇÃO: Removido 'shopType' dos argumentos da Query (API não suporta), mas mantido no retorno para filtro client-side
+            // CORREÇÃO: Removido 'shopType' e 'price' (deprecated) pois causavam erro na API. Voltando ao funcional.
             const queryPayload = {
                 query: `
-            query($keyword: String, $categoryId: Int, $sortType: Int, $listType: Int) {
-                productOfferV2(keyword: $keyword, productCatId: $categoryId, sortType: $sortType, listType: $listType, limit: 50) {
-                    nodes {
-                        itemId
-                        productName
-                        imageUrl
-                        price
-                        priceMin
-                        priceMax
-                        sales
-                        offerLink
-                        shopName
-                        ratingStar
+                    query($keyword: String, $categoryId: Int, $sortType: Int, $listType: Int) {
+                        productOfferV2(keyword: $keyword, productCatId: $categoryId, sortType: $sortType, listType: $listType, limit: 50) {
+                            nodes {
+                                itemId
+                                productName
+                                imageUrl
+                                priceMin
+                                priceMax
+                                sales
+                                offerLink
+                                shopName
+                                ratingStar
+                            }
+                        }
                     }
-                }
-            }
-        `,
+                `,
                 variables: {
                     keyword: listType ? null : keyword, // Se tem listType, zera keyword
                     categoryId: listType ? null : (categoryId ? parseInt(categoryId) : null),
@@ -495,15 +484,15 @@
                         products = products.filter(p => p.priceMin <= priceMax);
                     }
 
-                    // Filtragem Client-Side por Shop Type (Oficial/Indicada)
+                    // Filtragem Client-Side por Shop Type (Oficial/Indicada) - REMOVIDO
                     // A API não suporta shopType no filtro, então filtramos manualmente aqui
-                    if (shopType && shopType.length > 0) {
-                        products = products.filter(p => {
-                            if (!p.shopType) return false;
-                            // Verifica se algum dos tipos desejados está presente nos tipos da loja
-                            return shopType.some(t => p.shopType.includes(t));
-                        });
-                    }
+                    // if (shopType && shopType.length > 0) {
+                    //     products = products.filter(p => {
+                    //         if (!p.shopType) return false;
+                    //         // Verifica se algum dos tipos desejados está presente nos tipos da loja
+                    //         return shopType.some(t => p.shopType.includes(t));
+                    //     });
+                    // }
 
                     renderProducts(products, freeShipping);
                     statusDiv.classList.remove('hidden', 'bg-red-50', 'border-red-200', 'text-red-700', 'bg-yellow-50', 'border-yellow-200', 'text-yellow-700');
@@ -612,26 +601,25 @@
                     `;
                 }
 
-                // Shop Type Badge
-                let shopBadge = '';
-                if (product.shopType && product.shopType.includes(1)) { // Official Shop
-                    shopBadge = `
-                        <div class="absolute top-2 right-2 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-sm z-10 shadow-sm flex items-center gap-1">
-                            <i class="fas fa-crown"></i> MALL
-                        </div>
-                    `;
-                } else if (product.shopType && (product.shopType.includes(2) || product.shopType.includes(4))) { // Preferred
-                    shopBadge = `
-                        <div class="absolute top-2 right-2 bg-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-sm z-10 shadow-sm flex items-center gap-1">
-                            <i class="fas fa-check-circle"></i> INDICADA
-                        </div>
-                    `;
-                }
+                // Shop Type Badge - REMOVIDO
+                // let shopBadge = '';
+                // if (product.shopType && product.shopType.includes(1)) { // Official Shop
+                //     shopBadge = `
+                //         <div class="absolute top-2 right-2 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-sm z-10 shadow-sm flex items-center gap-1">
+                //             <i class="fas fa-crown"></i> MALL
+                //         </div>
+                //     `;
+                // } else if (product.shopType && (product.shopType.includes(2) || product.shopType.includes(4))) { // Preferred
+                //     shopBadge = `
+                //         <div class="absolute top-2 right-2 bg-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-sm z-10 shadow-sm flex items-center gap-1">
+                //             <i class="fas fa-check-circle"></i> INDICADA
+                //         </div>
+                //     `;
+                // }
 
                 return `
                 <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col group transition-all duration-300 relative h-full">
                     ${freeShippingBadge}
-                    ${shopBadge}
                     ${discount > 0 ? `
                         <div class="absolute top-2 ${freeShippingBadge ? 'left-24' : 'left-2'} bg-brand-orange text-white text-[10px] font-bold px-2 py-1 rounded-sm z-10 shadow-sm">
                             ${discount}% OFF
