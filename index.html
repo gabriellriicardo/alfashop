@@ -158,26 +158,27 @@
 
             <!-- Grid -->
             <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                <!-- Skeleton Loading Inicial (Mais itens para dar sensação de volume) -->
+                <!-- Skeleton Loading Inicial -->
                 <div class="bg-white rounded-xl p-4 shadow-sm h-80 flex flex-col gap-3">
                     <div class="w-full h-40 rounded-lg shimmer"></div>
                     <div class="w-3/4 h-4 rounded shimmer"></div>
+                    <div class="w-1/2 h-4 rounded shimmer"></div>
                 </div>
-                <div class="bg-white rounded-xl p-4 shadow-sm h-80 flex flex-col gap-3">
+                <!-- Repetir esqueleto -->
+                 <div class="bg-white rounded-xl p-4 shadow-sm h-80 flex flex-col gap-3">
                     <div class="w-full h-40 rounded-lg shimmer"></div>
                     <div class="w-3/4 h-4 rounded shimmer"></div>
+                    <div class="w-1/2 h-4 rounded shimmer"></div>
                 </div>
-                <div class="bg-white rounded-xl p-4 shadow-sm h-80 flex flex-col gap-3">
+                 <div class="bg-white rounded-xl p-4 shadow-sm h-80 flex flex-col gap-3">
                     <div class="w-full h-40 rounded-lg shimmer"></div>
                     <div class="w-3/4 h-4 rounded shimmer"></div>
+                    <div class="w-1/2 h-4 rounded shimmer"></div>
                 </div>
-                <div class="bg-white rounded-xl p-4 shadow-sm h-80 flex flex-col gap-3">
+                 <div class="bg-white rounded-xl p-4 shadow-sm h-80 flex flex-col gap-3">
                     <div class="w-full h-40 rounded-lg shimmer"></div>
                     <div class="w-3/4 h-4 rounded shimmer"></div>
-                </div>
-                <div class="bg-white rounded-xl p-4 shadow-sm h-80 flex flex-col gap-3">
-                    <div class="w-full h-40 rounded-lg shimmer"></div>
-                    <div class="w-3/4 h-4 rounded shimmer"></div>
+                    <div class="w-1/2 h-4 rounded shimmer"></div>
                 </div>
             </div>
             
@@ -239,17 +240,6 @@
 
     <!-- JAVASCRIPT -->
     <script>
-        // --- DADOS FAKE (FALLBACK DE SEGURANÇA) ---
-        // Adicionei shopLocation para simular origens
-        const mockProducts = [
-            { itemId: 1, productName: "Fone Bluetooth TWS (Exemplo)", shopName: "Audio Tech Store", shopLocation: "São Paulo, SP", price: 49.90, priceMax: 120.00, ratingStar: 4.8, sales: 1200, imageUrl: "https://images.unsplash.com/photo-1572569028738-411a78c1d166?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
-            { itemId: 2, productName: "Smartwatch Series 8 (Exemplo)", shopName: "Gadgets China", shopLocation: "Mainland China", price: 189.90, priceMax: 350.00, ratingStar: 4.7, sales: 850, imageUrl: "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
-            { itemId: 3, productName: "Tênis Runner (Exemplo)", shopName: "Sport Life Oficial", shopLocation: "Minas Gerais, MG", price: 129.90, priceMax: 199.90, ratingStar: 4.9, sales: 540, imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
-            { itemId: 4, productName: "Luminária LED (Exemplo)", shopName: "Casa & Conforto", shopLocation: "Rio de Janeiro, RJ", price: 35.50, priceMax: 60.00, ratingStar: 4.5, sales: 2100, imageUrl: "https://images.unsplash.com/photo-1534073828943-f801091a7174?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
-            { itemId: 5, productName: "Câmera Wi-Fi (Exemplo)", shopName: "Segurança Total", shopLocation: "Shenzhen, China", price: 110.00, priceMax: 180.00, ratingStar: 4.6, sales: 320, imageUrl: "https://images.unsplash.com/photo-1557324232-b8917d3c3d63?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" },
-            { itemId: 6, productName: "Kit Ferramentas (Exemplo)", shopName: "Ferragens do Zé", shopLocation: "Curitiba, PR", price: 89.90, priceMax: 150.00, ratingStar: 4.8, sales: 150, imageUrl: "https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", offerLink: "https://shopee.com.br" }
-        ];
-
         // CONFIGURAÇÃO DAS CATEGORIAS
         const categories = [
             { name: "Ofertas", icon: "fa-fire", color: "text-red-500 bg-red-50", query: "promoção" },
@@ -280,13 +270,13 @@
             `).join('');
         }
 
-        // --- FUNÇÃO ROBUSTA DE BUSCA ---
+        // --- FUNÇÃO DE BUSCA (APENAS API REAL) ---
         async function fetchProducts(keyword) {
             const grid = document.getElementById('productsGrid');
             const statusDiv = document.getElementById('apiStatus');
             const statusText = document.getElementById('apiStatusText');
             
-            // Loading com mais itens (20 itens para preencher tela)
+            // Loading
             grid.innerHTML = Array(20).fill(0).map(() => `
                 <div class="bg-white rounded-xl p-4 shadow-sm h-80 flex flex-col gap-3">
                     <div class="w-full h-40 rounded-lg shimmer"></div>
@@ -295,7 +285,6 @@
                 </div>
             `).join('');
 
-            // CORREÇÃO: Limite máximo permitido pela API é 50
             const queryPayload = {
                 query: `
                     query($keyword: String) {
@@ -328,7 +317,7 @@
 
                 const contentType = response.headers.get("content-type");
                 if (contentType && contentType.indexOf("application/json") === -1) {
-                    throw new Error(`Erro 404: O Backend não foi encontrado.`);
+                    throw new Error(`Erro 404: O Backend (/api/proxy) não foi encontrado.`);
                 }
 
                 if (!response.ok) {
@@ -348,28 +337,34 @@
                     statusText.innerHTML = `<strong>Sucesso:</strong> Exibindo resultados para "${keyword}".`;
                     setTimeout(() => statusDiv.classList.add('hidden'), 5000);
                 } else {
-                    throw new Error("Formato de dados inesperado.");
+                    throw new Error("Formato de dados inesperado ou lista vazia.");
                 }
 
             } catch (error) {
-                console.warn("Falha na API, ativando fallback.", error);
+                console.error("Falha na API:", error);
                 
                 statusDiv.classList.remove('hidden', 'bg-green-50', 'border-green-200', 'text-green-700');
+                statusDiv.classList.add('bg-red-50', 'border-red-200', 'text-red-700');
+                
                 if (error.message.includes('404')) {
-                     statusDiv.classList.add('bg-red-50', 'border-red-200', 'text-red-700');
-                     statusText.innerHTML = `<strong>Erro de Configuração:</strong> ${error.message}`;
+                     statusText.innerHTML = `<strong>Erro de Configuração:</strong> Backend não encontrado. Verifique se 'api/proxy.js' está rodando.`;
                 } else {
-                     statusDiv.classList.add('bg-yellow-50', 'border-yellow-200', 'text-yellow-700');
-                     statusText.innerHTML = `<strong>Modo Demonstração:</strong> ${error.message}`;
+                     statusText.innerHTML = `<strong>Erro:</strong> ${error.message}`;
                 }
 
-                const filtered = mockProducts.filter(p => 
-                    (p.productName || "").toLowerCase().includes(keyword.toLowerCase()) || 
-                    keyword === 'best sellers'
-                );
-                // Se o filtro mock retornar pouco, concatena para parecer cheio
-                const itemsToShow = filtered.length > 0 ? filtered : mockProducts;
-                renderProducts([...itemsToShow, ...itemsToShow, ...itemsToShow]); // Triplica para parecer que tem mais
+                // MOSTRA ERRO NA TELA (Sem dados fictícios)
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <i class="fas fa-exclamation-triangle text-4xl text-red-300 mb-3"></i>
+                        <h3 class="text-lg font-medium text-gray-800">Não foi possível carregar os produtos</h3>
+                        <p class="text-gray-500 mt-1">Verifique sua conexão ou a configuração da API.</p>
+                        <p class="text-xs text-gray-400 mt-2 font-mono bg-gray-100 p-2 rounded inline-block">${error.message}</p>
+                        <br>
+                        <button onclick="fetchProducts('${keyword}')" class="mt-6 bg-brand-orange text-white px-6 py-2 rounded-full hover:bg-orange-600 transition-colors">
+                            Tentar Novamente
+                        </button>
+                    </div>
+                `;
             }
         }
 
@@ -395,11 +390,12 @@
                 
                 // Lógica de Origem
                 let isInternational = false;
-                if(location.toLowerCase().includes('china') || 
+                if(location && (
+                   location.toLowerCase().includes('china') || 
                    location.toLowerCase().includes('hong kong') || 
                    location.toLowerCase().includes('korea') || 
                    location.toLowerCase().includes('abroad') ||
-                   location.toLowerCase().includes('overseas')) {
+                   location.toLowerCase().includes('overseas'))) {
                     isInternational = true;
                 }
 
@@ -407,9 +403,9 @@
                     ? `<span class="text-[9px] bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded border border-purple-200 flex items-center gap-1 font-bold"><i class="fas fa-plane"></i> Int.</span>`
                     : `<span class="text-[9px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded border border-green-200 flex items-center gap-1 font-bold"><i class="fas fa-flag"></i> BR</span>`;
                 
-                const rawPrice = product.price || product.priceMin || 99.90;
+                const rawPrice = product.price || product.priceMin || 0;
                 let price = parseFloat(rawPrice);
-                if (isNaN(price)) price = 99.90;
+                if (isNaN(price)) price = 0;
 
                 const rawOldPrice = product.priceMax;
                 let oldPrice = parseFloat(rawOldPrice);
