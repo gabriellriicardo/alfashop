@@ -135,6 +135,14 @@
                         class="whitespace-nowrap px-4 py-2 bg-red-100 text-red-700 rounded-full text-sm font-bold hover:bg-red-200 transition-colors shadow-sm border border-red-200 flex items-center gap-2">
                         <i class="fas fa-fire"></i> Mais Vendidos
                     </button>
+                    <button onclick="fetchProducts(null, '👑 Lojas Oficiais', null, null, false, null, null, [1])"
+                        class="whitespace-nowrap px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold hover:bg-red-700 transition-colors shadow-sm border border-red-700 flex items-center gap-2">
+                        <i class="fas fa-crown"></i> Oficiais
+                    </button>
+                    <button onclick="fetchProducts(null, '⭐ Lojas Indicadas', null, null, false, null, null, [2, 4])"
+                        class="whitespace-nowrap px-4 py-2 bg-orange-500 text-white rounded-full text-sm font-bold hover:bg-orange-600 transition-colors shadow-sm border border-orange-600 flex items-center gap-2">
+                        <i class="fas fa-star"></i> Indicadas
+                    </button>
                     <button onclick="fetchProducts('promoção', 'Achadinhos até R$20 💸', null, 20)"
                         class="whitespace-nowrap px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-bold hover:bg-green-200 transition-colors shadow-sm border border-green-200 flex items-center gap-2">
                         <i class="fas fa-search-dollar"></i> Até R$ 20,00
@@ -369,15 +377,16 @@
         let currentPriceMax = null;
         let currentFreeShipping = false;
         let currentListType = null;
+        let currentShopType = null;
 
         function applySort() {
             const sortType = document.getElementById('sortSelect').value;
             // Rechama a busca com os parâmetros atuais e o novo sortType
-            fetchProducts(currentKeyword, currentCustomTitle, currentCategoryId, currentPriceMax, currentFreeShipping, sortType, currentListType);
+            fetchProducts(currentKeyword, currentCustomTitle, currentCategoryId, currentPriceMax, currentFreeShipping, sortType, currentListType, currentShopType);
         }
 
         // --- FUNÇÃO DE BUSCA (APENAS API REAL) ---
-        async function fetchProducts(keyword, customTitle = null, categoryId = null, priceMax = null, freeShipping = false, sortType = null, listType = null) {
+        async function fetchProducts(keyword, customTitle = null, categoryId = null, priceMax = null, freeShipping = false, sortType = null, listType = null, shopType = null) {
 
             // Atualiza estado global
             currentKeyword = keyword;
@@ -386,6 +395,7 @@
             currentPriceMax = priceMax;
             currentFreeShipping = freeShipping;
             currentListType = listType;
+            currentShopType = shopType;
 
             const grid = document.getElementById('productsGrid');
             const statusDiv = document.getElementById('apiStatus');
@@ -409,6 +419,10 @@
                 sectionTitle.innerHTML = `<i class="fas fa-tag text-brand-orange"></i> Categoria: ${keyword}`;
             } else if (listType === 2) {
                 sectionTitle.innerHTML = `<i class="fas fa-fire text-red-500"></i> Os Mais Vendidos`;
+            } else if (shopType && shopType.includes(1)) {
+                sectionTitle.innerHTML = `<i class="fas fa-crown text-red-600"></i> Lojas Oficiais (Shopee Mall)`;
+            } else if (shopType && shopType.includes(2)) {
+                sectionTitle.innerHTML = `<i class="fas fa-star text-orange-500"></i> Lojas Indicadas`;
             } else {
                 sectionTitle.innerHTML = `<i class="fas fa-search text-brand-orange"></i> Resultados para "${keyword}"`;
             }
@@ -422,17 +436,17 @@
                 </div>
             `).join('');
 
-            // CORREÇÃO: Removido 'shopLocation' que causava erro na API
+            // CORREÇÃO: Removido 'shopLocation' e 'price' (deprecated) que causavam erro na API
             const queryPayload = {
                 query: `
-                    query($keyword: String, $categoryId: Int, $sortType: Int, $listType: Int) {
-                        productOfferV2(keyword: $keyword, productCatId: $categoryId, sortType: $sortType, listType: $listType, limit: 50) {
+                    query($keyword: String, $categoryId: Int, $sortType: Int, $listType: Int, $shopType: [Int]) {
+                        productOfferV2(keyword: $keyword, productCatId: $categoryId, sortType: $sortType, listType: $listType, shopType: $shopType, limit: 50) {
                             nodes {
                                 itemId
                                 productName
                                 shopName
+                                shopType
                                 imageUrl
-                                price
                                 priceMin
                                 priceMax
                                 ratingStar
@@ -447,7 +461,8 @@
                     keyword: listType ? null : keyword, // Se tem listType, zera keyword
                     categoryId: listType ? null : (categoryId ? parseInt(categoryId) : null),
                     sortType: listType ? null : (sortType ? parseInt(sortType) : null),
-                    listType: listType ? parseInt(listType) : null
+                    listType: listType ? parseInt(listType) : null,
+                    shopType: shopType
                 }
             };
 
@@ -478,7 +493,7 @@
 
                     // Filtragem Client-Side por Preço Máximo (já que a API não aceitou priceMax)
                     if (priceMax) {
-                        products = products.filter(p => p.price <= priceMax);
+                        products = products.filter(p => p.priceMin <= priceMax);
                     }
 
                     renderProducts(products, freeShipping);
@@ -537,7 +552,7 @@
                 const name = product.productName || product.name || "Produto sem nome";
                 const shop = product.shopName || "Shopee";
 
-                const rawPrice = product.price || product.priceMin || 0;
+                const rawPrice = product.priceMin || 0;
                 let price = parseFloat(rawPrice);
                 if (isNaN(price)) price = 0;
 
@@ -588,9 +603,26 @@
                     `;
                 }
 
+                // Shop Type Badge
+                let shopBadge = '';
+                if (product.shopType && product.shopType.includes(1)) { // Official Shop
+                    shopBadge = `
+                        <div class="absolute top-2 right-2 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-sm z-10 shadow-sm flex items-center gap-1">
+                            <i class="fas fa-crown"></i> MALL
+                        </div>
+                    `;
+                } else if (product.shopType && (product.shopType.includes(2) || product.shopType.includes(4))) { // Preferred
+                    shopBadge = `
+                        <div class="absolute top-2 right-2 bg-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-sm z-10 shadow-sm flex items-center gap-1">
+                            <i class="fas fa-check-circle"></i> INDICADA
+                        </div>
+                    `;
+                }
+
                 return `
                 <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col group transition-all duration-300 relative h-full">
                     ${freeShippingBadge}
+                    ${shopBadge}
                     ${discount > 0 ? `
                         <div class="absolute top-2 ${freeShippingBadge ? 'left-24' : 'left-2'} bg-brand-orange text-white text-[10px] font-bold px-2 py-1 rounded-sm z-10 shadow-sm">
                             ${discount}% OFF
